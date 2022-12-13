@@ -1,4 +1,4 @@
-#Calculate the total bill when metering type is gross metering
+#Calculate the total bill when metering type is Net Feed In
 # Packages required
 import time
 # starting time
@@ -34,7 +34,7 @@ tou_select = SQL.tou_select
 # TOU matrix
 TOU = TOU.tou_matrix
 # Function to do the bill calculation
-def GM():
+def NF():
     bill_amt_25 = pd.DataFrame()
     #Network charge and compensation rate
     NC = network_charge_fetch(x1[0])[0]
@@ -54,9 +54,9 @@ def GM():
         g_units = (g_units_t['year' + str(n)])
         s_units = a_units[0]['year' + str(n)]
         # print(s_units['year1'])
-        # b_units = a_units[1]
+        b_units = a_units[1]['year' + str(n)]
         # print(b_units['year25'])
-        # e_units = a_units[2]
+        e_units = a_units[2]['year' + str(n)]
         # print(e_units['year25'])
         bill_amt = 0
         temp = []
@@ -69,20 +69,20 @@ def GM():
         # #Calculate the network charge applicable
             NC_t = NC * s_units[i]
             #Revenue from export to grid
-            CR_t = CR * s_units[i]
+            CR_t = CR * e_units[i]
             #Bill calculation for Gross metering
             bill_amt = FC_m + ((EC_t - CR_t) + NC_t)
             bill_amt_m.append(bill_amt)
         temp = bill_amt_m
         # print(bill_amt_m)
         bill_amt_25['year' + str(n)] = temp
-    print(bill_amt_25)
+    # print(bill_amt_25)
     return bill_amt_25
 
-print(GM())
+print(round(NF(),3))
 
 # end time
 end = time.time()
 
 runtime = (end - start)
-print('The runtime Gross metering:', runtime)
+print('The runtime Net Feed In:', runtime)
