@@ -46,13 +46,17 @@ def GM():
     g_units_t = (grid_w_sys25())
     # print((g_units[0][0]))
     ##Solar, battery and export units
-    a_units = (unit_w_sys25(esc25()[2], esc25()[3], esc25()[4]))
+    a_units_t = esc25()
+    list = [a_units_t[2], a_units_t[3], a_units_t[4]]
+    a_units = (unit_w_sys25(list))
     # print(a_units[0]['year25'])
     #Calculation of bill for 25 years
     for n in range(0,26):
+        FC = FC_m * (1 + (n * cost_esc))
         # Units information stored in variable
         g_units = (g_units_t['year' + str(n)])
         s_units = a_units[0]['year' + str(n)]
+
         # print(s_units['year1'])
         # b_units = a_units[1]
         # print(b_units['year25'])
@@ -64,22 +68,23 @@ def GM():
 
     # #Calculation of bill for 12 months of a year
         for i in range(0,12):
+            list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n]
         #     # Variable for 25 year analysis
-            EC_t = EC(g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n)
+            EC_t = EC(list_m)
         # #Calculate the network charge applicable
             NC_t = NC * s_units[i]
             #Revenue from export to grid
             CR_t = CR * s_units[i]
             #Bill calculation for Gross metering
-            bill_amt = FC_m + ((EC_t - CR_t) + NC_t)
+            bill_amt = FC + ((EC_t - CR_t) + NC_t)
             bill_amt_m.append(bill_amt)
         temp = bill_amt_m
         # print(bill_amt_m)
         bill_amt_25['year' + str(n)] = temp
-    print(bill_amt_25)
+    # print(bill_amt_25)
     return bill_amt_25
 
-print(GM())
+# print(GM())
 
 # end time
 end = time.time()

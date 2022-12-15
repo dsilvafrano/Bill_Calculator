@@ -13,16 +13,16 @@ import time
 #Inputs from users
 latitude = 9.894568695410525
 longitude = 78.07983441534354
-sload = 125 # from user
+sload = 105 # from user
 tariff_id = 2 # consumer type
-voltage_id = 2 # voltage type
-voltage = "HT"
+voltage_id = 1 # voltage type
+voltage = "LT"
 tariff = 'Industrial' #Domestic, Industrial, Commercial, Private, Public
 residence_type = 'Independent House'
 metering_id = 1
 state_id = 1
 state = "Tamil Nadu"
-metering_type = "Gross Metering" #Gross Metering, Net Feed In, Net Metering
+metering_type = "Net Feed In" #Gross Metering, Net Feed In, Net Metering
 weekend_consumption_change = -0.5
 weekend_consumption_separate = 1 # if this is 1, it means there is weekend consumption
 load_input_type = "monthwise"# monthwise & average_monthly

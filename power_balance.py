@@ -175,7 +175,7 @@ def power_balance(x1, g):
     # end time
     end2 = time.time()
     runtime2 = (end2 - start2)
-    print('The runtime for power balance is:',runtime2)
+    # print('The runtime for power balance is:',runtime2)
     # print('Total solar :', sum_solar)
     # print('Export:', sum(excessder))
     return df1, sum_battery, sum_grid, sum_export, sum_solar, sum_solar_load
@@ -185,4 +185,4 @@ def power_balance(x1, g):
 end = time.time()
 
 runtime = (end - start)
-print('The runtime power balance:', runtime)
+# print('The runtime power balance:', runtime)

@@ -32,20 +32,25 @@ tou_select = SQL.tou_select
 # TOU matrix
 TOU = TOU.tou_matrix
 
-def EC(m_units, m_units_n, m_units_p, m_units_op, n):
+def EC(list):
+    # # starting time
+    # start1 = time.time()
     for j in range (0,12):
-        # m_units = month_units[j]
-        # m_units_n = month_units_n[j]
-        # m_units_p = month_units_p[j]
-        # m_units_op = month_units_op[j]
+        m_units = list[0]
+        m_units_n = list[1]
+        m_units_p = list[2]
+        m_units_op = list[3]
+        n = list[4]
 
         bill_amt_EC = 0
         bill_amt_n = 0
         bill_amt_p = 0
         bill_amt_op = 0
-        EC = slab_selection(m_units, n)[0]
-        EC_p = slab_selection(m_units, n)[2]
-        EC_op = slab_selection(m_units, n)[3]
+        list_s = [m_units, n]
+        EC_s = slab_selection(list_s)
+        EC = EC_s[0]
+        EC_p = EC_s[2]
+        EC_op = EC_s[3]
         EC['energy_charge'] * (1 + (n * cost_esc))
         # print(EC['energy_charge'])
         EC_p['energy_charge'] * (1 + (n * cost_esc))
@@ -80,7 +85,11 @@ def EC(m_units, m_units_n, m_units_p, m_units_op, n):
 
 
         bill_amt_EC = int(bill_amt_n + bill_amt_p + bill_amt_op)
-
+        # end time
+        # end1 = time.time()
+        #
+        # runtime1 = (end1 - start1)
+        # print('The runtime EC charge selection:', runtime1)
         return bill_amt_EC
 
 # print(EC(1000, 600, 200, 200, 1))

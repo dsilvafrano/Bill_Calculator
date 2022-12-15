@@ -24,17 +24,17 @@ TOU = TOU.tou_matrix
 # days = API.solarp['day']
 TS = API.solarp['date&time']
 
-def unit_w_sys25(list, list1, list2):
+def unit_w_sys25(list):
     units = pd.DataFrame()
-    units = list
+    units = list[0]
     units_t = pd.DataFrame()
     units_t.insert(0, 'TS', TS)
     units_t.insert(1, 'TOU', TOU)
-    units1 = list1
+    units1 = list[1]
     units1_t = pd.DataFrame()
     units1_t.insert(0, 'TS', TS)
     units1_t.insert(1, 'TOU', TOU)
-    units2 = list2
+    units2 = list[2]
     # print(list[0:24])
     units2_t = pd.DataFrame()
     units2_t.insert(0, 'TS', TS)
@@ -47,9 +47,9 @@ def unit_w_sys25(list, list1, list2):
         units_m = pd.DataFrame()
         units1_m = pd.DataFrame()
         units2_m = pd.DataFrame()
-        units_t['year'] = units[['year' + str(i)]]
-        units1_t['year'] = units1[['year' + str(i)]]
-        units2_t['year'] = units2[['year' + str(i)]]
+        units_t['year'] = units['year' + str(i)]
+        units1_t['year'] = units1['year' + str(i)]
+        units2_t['year'] = units2['year' + str(i)]
         # units_t['cum_year'] = units_t.groupby((units_t['TS']).dt.month)['year'].cumsum()
         # data re-sampled based on each month(gives 12 values with sum for each month)
         sum_in_month = units_t.resample('MS', on='TS').year.sum()

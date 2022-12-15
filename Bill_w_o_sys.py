@@ -13,6 +13,7 @@ import Monthly
 import Monthwise
 import API
 import FC_EC_calc
+from EC_calc import EC
 import escalation
 
 #SQL connection
@@ -50,62 +51,22 @@ def bill_w_o_sys(n):
         m_units_n = month_units_n[j] * (1 + (n * load_esc))
         m_units_p = month_units_p[j] * (1 + (n * load_esc))
         m_units_op = month_units_op[j] * (1 + (n * load_esc))
-
-        bill_amt = 0
-        bill_amt_n = 0
-        bill_amt_p = 0
-        bill_amt_op = 0
+        list_m = [m_units, m_units_n, m_units_p, m_units_op, n]
+        #     # Variable for 25 year analysis
         FC = fixed_charge_m * (1 + (n * cost_esc))
-        EC = escalation.slab_selection(m_units, n)[0]
-        EC_p = escalation.slab_selection(m_units, n)[2]
-        EC_op = escalation.slab_selection(m_units, n)[3]
-        EC['energy_charge'] * (1 + (n * cost_esc))
-        # print(EC['energy_charge'])
-        EC_p['energy_charge'] * (1 + (n * cost_esc))
-        # print(EC['energy_charge'])
-        EC_op['energy_charge'] * (1 + (n * cost_esc))
-        # print(EC_op['energy_charge'])
-        # print(EC)
-        m_tier = (EC['tier'].max())
-        # print(EC['maximum'])
-        # print(EC['bill_amt'])
-        # print(EC['energy_charge'])
-        for i in range(1,(m_tier+1)):
-            if m_units_n >= EC['maximum'][i-1]:
-                bill_amt_n = int(bill_amt_n + EC['bill_amt'][i-1])
-                m_units_n = m_units_n - (EC['maximum'][i-1] - EC['min'][i-1])
-            else:
-                bill_amt_n = int(bill_amt_n + (m_units_n * EC['energy_charge'][i - 1]))
-
-            if tou_select == 1 or tou_select == 2:  # 1 means applicable and 2 means optional
-                if m_units_p >= EC_p['maximum'][i - 1]:
-                    bill_amt_p = int(bill_amt_p + EC_p['bill_amt'][i - 1])
-                    m_units_p = m_units_p - (EC_p['maximum'][i - 1] - EC_p['min'][i - 1])
-                else:
-                    bill_amt_p = int(bill_amt_p + (m_units_p * EC['energy_charge'][i - 1]))
-
-                if m_units_op >= EC_op['maximum'][i - 1]:
-                    bill_amt_op = int(bill_amt_op + EC_op['bill_amt'][i - 1])
-                    m_units_op = m_units_op - (EC_op['maximum'][i - 1] - EC_op['min'][i - 1])
-                else:
-                    bill_amt_op = int(bill_amt_op + (m_units_p * EC_op['energy_charge'][i - 1]))
-                    # print(bill_amt)
+        EC_t = EC(list_m)
 
 
-        bill_amt = int(bill_amt_n + bill_amt_p + bill_amt_op)
-        # print(bill_amt)
-        # print('N',bill_amt_n)
-        # print('P',bill_amt_p)
-        # print('OP',bill_amt_op)
-
-        Total: int = FC + bill_amt
+        Total: int = FC + EC_t
         t_bill.append(Total)
         # print(t_bill)
 
     return t_bill
 
+# print(bill_w_o_sys(0))
+
 # end time
 end = time.time()
 
 runtime = (end - start)
-# print('The runtime Bill without system inside:', runtime)
+print('The runtime Bill without system inside:', runtime)

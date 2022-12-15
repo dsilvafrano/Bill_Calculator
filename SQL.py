@@ -162,7 +162,7 @@ def network_charge_fetch(user_pv_capacity):
     # print('network_charges:', network_charges)
 
     return network_charges, compensation_rates
-print('The compensation rate & network charges are:', network_charge_fetch(10))
+# print('The compensation rate & network charges are:', network_charge_fetch(10))
 
 # Retrieve Financial suggestion
 def financial_fetch(user_pv_capacity):
@@ -242,7 +242,7 @@ def investmentcost_calculate(system_capacity, bat_sim_kwh):
             total_installation_cost = (float(system_capacity) * float(financial_fetch(sload)[2]))
 
     return total_installation_cost
-print('The installation cost is:', investmentcost_calculate(10, 0))
+# print('The installation cost is:', investmentcost_calculate(10, 0))
 
 # Replacement cost Calculation
 # find the replacement cost of inverter and battery

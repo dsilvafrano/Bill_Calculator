@@ -45,7 +45,7 @@ def grid_w_sys25():
         g_units_t['peak_year'] = np.where(g_units_t['TOU'] == 2, g_units_t['year'], 0)
         # g_units_t['cum_P_year'] = g_units_t.groupby((g_units_t['TS']).dt.month)['peak_year'].cumsum()
         # filter for offpeak period and cumulating for each month
-        g_units_t['offpeak_year'] = np.where(g_units_t['TOU'] == 2, g_units_t['year'], 0)
+        g_units_t['offpeak_year'] = np.where(g_units_t['TOU'] == 3, g_units_t['year'], 0)
         # g_units_t['cum_OP_year'] = g_units_t.groupby((g_units_t['TS']).dt.month)['offpeak_year'].cumsum()
 
         # data re-sampled based on each month(gives 12 values with sum for each month)

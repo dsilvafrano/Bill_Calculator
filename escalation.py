@@ -65,7 +65,11 @@ def fixed_charge_esc(n):
 
 
 # selection of appropriate slab with respect to the monthly avg consumption & escalating it accordingly
-def slab_selection(avg_monthly, n):
+def slab_selection(list_s):
+    avg_monthly = list_s[0]
+    n = list_s[1]
+    # starting time
+    start1 = time.time()
     # Selection of slab by taking a monthly average of 8760 points
 
 
@@ -138,8 +142,13 @@ def slab_selection(avg_monthly, n):
     # EC = pd.concat([EC_matrix,EC_p_cost_esc,EC_op_cost_esc], axis=0)
     # print(EC['period'][0][])
     # print('The applicable off peak energy charge is:',(cost_escalation_op(1)))
+    # end time
+    end1 = time.time()
 
-    return EC_matrix, slab_id_a, EC_p_cost_esc, EC_op_cost_esc
+    runtime1 = (end1 - start1)
+    # print('The runtime slab selection inside:', runtime1)
+    list_s_up = [EC_matrix, slab_id_a, EC_p_cost_esc, EC_op_cost_esc]
+    return list_s_up
 
 # print('The selected EC table is:', float(slab_selection(200, 0)[3]['energy_charge']))
 
