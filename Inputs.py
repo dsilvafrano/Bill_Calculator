@@ -60,9 +60,9 @@ weekend_consumption_22to6 = 10
 nyr = 26
 solar = True
 battery = True
-x1 = np.zeros(2, dtype=float)
-x1[0] = 9.13 # user input solar capacity
-x1[1] = 2.65 # user input storage capacity
+# x1 = np.zeros(2, dtype=float)
+# x1[0] = 9.82 # user input solar capacity
+# x1[1] = 1.28 # user input storage capacity
 # print(x1[0])
 der_deg = 0.01  # solar degradation
 bat_type = 1  # battery type = 1 fo Li ion, 0 for lead acid

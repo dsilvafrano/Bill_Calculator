@@ -7,7 +7,7 @@ start = time.time()
 
 import pandas as pd
 import numpy as np
-from Inputs import latitude,longitude,x1,solar,battery,socin,socmax,der_deg,batstatus,metering_type
+from Inputs import latitude,longitude,solar,battery,socin,socmax,der_deg,batstatus,metering_type
 from API import api
 from SQL import socmin, load_esc
 from power_balance import power_balance
@@ -17,12 +17,7 @@ from SOC import SOC
 # Inputs required
 solar = solar
 battery = battery
-bat_inv = 0.835 * x1[0]
-socbatmax = socmax * x1[1]
-# print('SOC max', socbatmax)
-socbatmin = socmin * x1[1]
-# print('SOC min', socbatmin)
-socin = socin * x1[1]
+
 load_esc = load_esc
 der_deg = der_deg
 # print(der_deg)
@@ -32,7 +27,13 @@ solarp = api(latitude,longitude)
 # Converting (Wac) to (kWac)
 solarp['AC(kW)'] = solarp['AC(kW)']/1000
 
-def esc25():
+def esc25(x1):
+    bat_inv = 0.835 * x1[0]
+    socbatmax = socmax * x1[1]
+    # print('SOC max', socbatmax)
+    socbatmin = socmin * x1[1]
+    # print('SOC min', socbatmin)
+    socbatin = socin * x1[1]
     #Retrieve the information from power balance
     df_l = pd.DataFrame()
     df_s = pd.DataFrame()
@@ -84,7 +85,7 @@ def esc25():
             df_ch['year' + str(i)] = np.select(cond_ch,choice_ch)
 
             # Battery power for year i
-            df_b['year' + str(i)] = SOC(df_ch['year' + str(i)]).round(3)
+            df_b['year' + str(i)] = SOC(df_ch['year' + str(i)], x1).round(3)
             # Removing all negative values to find sum of battery contribution
             df_b['year' + str(i)] = np.where((df_b['year' + str(i)] < 0), 0, df_b['year' + str(i)]).round(3)
             if metering_type == "Gross Metering":

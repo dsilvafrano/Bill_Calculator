@@ -54,11 +54,11 @@ def financial_calc(x1):
     Elec_bill_withoutDER[0] = sum(Elec_bill_withoutDER_t['year0'])
 
     if metering_type == "Net Metering":
-        Elec_bill_withDER_t = NM()
+        Elec_bill_withDER_t = NM(x1)
     elif metering_type == "Net Feed In":
-        Elec_bill_withDER_t = NF()
+        Elec_bill_withDER_t = NF(x1)
     else:
-        Elec_bill_withDER_t = GM()
+        Elec_bill_withDER_t = GM(x1)
 
     # Year 0 is considered as BAU
     Elec_bill_withDER[0] = 0

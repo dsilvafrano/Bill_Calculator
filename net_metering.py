@@ -14,12 +14,12 @@ from EC_calc import EC
 from bill_unitsNM import bill_unitsNM
 
 # Inputs required
-x1 = np.zeros(2, dtype=float)
-x1[0] = Inputs.x1[0] # user input solar capacity
-x1[1] = Inputs.x1[1] # user input storage capacity
+# x1 = np.zeros(2, dtype=float)
+# x1[0] = Inputs.x1[0] # user input solar capacity
+# x1[1] = Inputs.x1[1] # user input storage capacity
 
 # Function to do the bill calculation
-def NM():
+def NM(x1):
     # starting time
     start1 = time.time()
     bill_amt_25 = pd.DataFrame()
@@ -31,7 +31,7 @@ def NM():
     # # Fixed charge and Energy charge details
     FC_m = fixed_charge_m
     ##Bill units has value for Total, Normal, peak, offpeak, export and excess updated for each month
-    bill_unit_25 = (bill_unitsNM())
+    bill_unit_25 = (bill_unitsNM(x1))
     s_units = bill_unit_25['year0'][5]
     # print(s_units)
     b_units = bill_unit_25['year0'][6]

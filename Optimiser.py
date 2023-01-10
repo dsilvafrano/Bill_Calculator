@@ -5,10 +5,10 @@ start = time.time()
 import numpy as np
 import pandas as pd
 from financial_calc import financial_calc
-from Inputs import solar, battery, sload, x1
+from Inputs import solar, battery, sload
 from scipy.optimize import minimize, basinhopping
 #Define Input Method
-inputmethod = 'customize'
+inputmethod = 'optimize'
 # Optimisation using Scipy
 
 if inputmethod=='optimize':
@@ -97,7 +97,7 @@ if inputmethod=='optimize':
 # Optimisation function
     # SLSQP optimization
     solution = minimize(objective, xx, method='COBYLA', bounds=bnds, tol=1e-5, callback=CB, #constraints=cons,
-                        options={'disp': True, 'maxiter': 10})
+                        options={'disp': True, 'maxiter': 5})
 
     # SHGO optimization
     # solution1 = shgo(eggholder, bounds=bnds, n=2, iters=1, callback=CB,sampling_method='simplicial')
@@ -183,11 +183,11 @@ if inputmethod=='optimize':
 
 else:
 # Customise run inputs and results display
-    x =np.zeros(2, dtype=float).round(3)
-    x[0] = x1[0] # user input solar capacity
+    a =np.zeros(2, dtype=float).round(3)
+    a[0] = 9.82 # user input solar capacity
     # # a[0]= 26.126338006179388 # user input solar capacity
-    x[1]= x1[1] # user input storage capacity
-    npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested=financial_calc(x)
+    a[1]= 1.28 # user input storage capacity
+    npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested=financial_calc(a)
 
     end = time.time()
     # total time taken
@@ -203,7 +203,7 @@ else:
     print('NPV for BAU = ' + str(bau_npv))
     print('Discounted Total Savings = ' + str(dis_saving))
     print('NPV(BAU) to dis.Savings = ' + str(NPV_to_Savings))
-    a1 = [x[0], x[1], npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested]
+    a1 = [a[0], a[1], npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested]
     print(a1)
 
 

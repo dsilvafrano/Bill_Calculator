@@ -20,9 +20,9 @@ TOU = tou_matrix
 days = wk
 TS = ts
 
-def grid_w_sys25():
+def grid_w_sys25(x1):
     g_units = pd.DataFrame()
-    g_units = esc25()[1]
+    g_units = esc25(x1)[1]
     g_units_t = pd.DataFrame()
     g_units_t.insert(0, 'TS', TS)
     g_units_t.insert(1, 'TOU', TOU)

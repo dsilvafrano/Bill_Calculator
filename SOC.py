@@ -4,7 +4,7 @@ import time
 # starting time
 # start = time.time()
 #Packages required
-from Inputs import x1, socin, socmax, batstatus
+from Inputs import socin, socmax, batstatus
 from SQL import socmin
 import numpy as np
 
@@ -13,19 +13,20 @@ batstatus = batstatus[0]
 # x1 = np.zeros(2, dtype=float)
 # x1[0] = Inputs.x1[0] # user input solar capacity
 # x1[1] = Inputs.x1[1] # user input storage capacity
-bat_inv = 0.835 * x1[0]
-socbatmax = socmax * x1[1]
-# print('SOC max', socbatmax)
-socbatmin = socmin * x1[1]
-# print('SOC min', socbatmin)
-socin = socin * x1[1]
+
 
 # print(batstatus)
 ch_dis_available = np.zeros(n)
 
-def SOC(ch_dis_available):
+def SOC(ch_dis_available, x1):
+	bat_inv = 0.835 * x1[0]
+	socbatmax = socmax * x1[1]
+	# print('SOC max', socbatmax)
+	socbatmin = socmin * x1[1]
+	# print('SOC min', socbatmin)
+	socbatin = socin * x1[1]
 	soc = np.zeros(n)
-	soc[0] = socin
+	soc[0] = socbatin
 	battery_power = np.zeros(n)
 
 	for i in range(n - 1):
