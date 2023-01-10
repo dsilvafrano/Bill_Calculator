@@ -8,32 +8,16 @@ import pandas as pd
 import numpy as np
 
 import Inputs
-import SQL
-import Monthly
-import Monthwise
-import API
-import TOU
-import FC_EC_calc
-from escalation import slab_selection
-from power_balance25 import esc25
-from unit_w_sys25 import unit_w_sys25
-from grid_w_sys25 import grid_w_sys25
-from SQL import network_charge_fetch
+from FC_EC_calc import fixed_charge_m
+from SQL import network_charge_fetch, cost_esc
 from EC_calc import EC
 from bill_unitsNM import bill_unitsNM
-#SQL connection
-conn = SQL.conn
 
 # Inputs required
 x1 = np.zeros(2, dtype=float)
 x1[0] = Inputs.x1[0] # user input solar capacity
 x1[1] = Inputs.x1[1] # user input storage capacity
-load_esc = SQL.load_esc
-cost_esc = SQL.cost_esc
-tou_select = SQL.tou_select
-# print(tou_select)
-# TOU matrix
-TOU = TOU.tou_matrix
+
 # Function to do the bill calculation
 def NM():
     # starting time
@@ -45,7 +29,7 @@ def NM():
     CR = network_charge_fetch(x1[0])[1]
 
     # # Fixed charge and Energy charge details
-    FC_m = FC_EC_calc.fixed_charge_m
+    FC_m = fixed_charge_m
     ##Bill units has value for Total, Normal, peak, offpeak, export and excess updated for each month
     bill_unit_25 = (bill_unitsNM())
     s_units = bill_unit_25['year0'][5]

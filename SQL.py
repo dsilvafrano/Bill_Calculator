@@ -5,8 +5,8 @@ import pandas as pd
 import numpy as np
 import sqlite3
 import logger
-import Inputs
-# import SQL
+from Inputs import sload, state_id, voltage_id, metering_id, tariff_id, state, tariff, voltage, metering_type, solar, \
+    battery, bat_type, residence_type, solarpv_subsidy, nyr
 import time
 
 # starting time
@@ -24,25 +24,6 @@ def create_connection():
 
 conn = create_connection()
 
-# Inputs required
-state_id = Inputs.state_id
-voltage_id = Inputs.voltage_id
-tariff_id = Inputs.tariff_id
-metering_id = Inputs.metering_id
-state = Inputs.state
-tariff = Inputs.tariff
-voltage = Inputs.voltage
-metering_type = Inputs.metering_type
-sload = Inputs.sload
-solar = Inputs.solar
-battery = Inputs.battery
-bat_type = Inputs.bat_type
-residence_type = Inputs.residence_type
-# pysam_dc_ac_ratio = SQL.pysam_dc_ac_ratio
-solarpv_subsidy = Inputs.solarpv_subsidy
-nyr = Inputs.nyr
-# rep_yrs_battery = SQL.rep_yrs_battery
-# rep_yrs_inverter = SQL.rep_yrs_inverter
 
 # fetch the dc ac ratio from database
 dc_ac_ratio_q = pd.read_sql_query("select value from assumptions_pvwatts where parameter = 'dc_ac_ratio'", conn)
@@ -54,7 +35,7 @@ inv_replace_year_q = pd.read_sql_query("select value from assumptions_pvwatts wh
 inv_replace_year = int(inv_replace_year_q.values[0])
 
 # find the battery replacement year based on the lifecycle of batteries
-if Inputs.bat_type == 1:
+if bat_type == 1:
     battery_cycle_q = pd.read_sql_query(
         "select value from assumptions_battwatts where parameter = 'battery_cyclelife_liion'", conn)
 
@@ -62,7 +43,7 @@ if Inputs.bat_type == 1:
     battery_dod_q = pd.read_sql_query(
         "select value from assumptions_battwatts where parameter = 'battery_dod_liion'", conn)
     dod = int(battery_dod_q.values[0])/100
-elif Inputs.bat_type == 0:
+elif bat_type == 0:
     battery_cycle_q = pd.read_sql_query(
         "select value from assumptions_battwatts where parameter = 'battery_cyclelife_pbacid'", conn)
     battery_cycle_v = int(battery_cycle_q.values[0])
@@ -74,7 +55,7 @@ elif Inputs.bat_type == 0:
 socmin = 1 - dod
 # print('SOC min', socmin)
 battery_replace_year = int(battery_cycle_v / 365)
-numb_battery_replacement = int(Inputs.nyr / (battery_replace_year + 1))
+numb_battery_replacement = int(nyr / (battery_replace_year + 1))
 rep_yrs_battery = [i * (battery_replace_year + 1) for i in range(1, numb_battery_replacement + 1)]
 rep_yrs_inverter = [inv_replace_year]
 

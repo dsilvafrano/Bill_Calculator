@@ -1,22 +1,22 @@
 # Packages required
-import numpy as np
+
 import pandas as pd
-import Inputs
-import SQL
+from Inputs import sload, state_id, voltage_id, metering_id, tariff_id
+from SQL import conn
 import time
 
 # starting time
 # start = time.time()
 
 #SQL connection
-conn = SQL.conn
+conn = conn
 
 # Inputs required
-state_id = Inputs.state_id
-voltage_id = Inputs.voltage_id
-tariff_id = Inputs.tariff_id
-metering_id = Inputs.metering_id
-sload = Inputs.sload
+state_id = state_id
+voltage_id = voltage_id
+tariff_id = tariff_id
+metering_id = metering_id
+sload = sload
 
 # Retrieve the applicable Energy charge; max slab & max tier
 slab_id_q = pd.read_sql_query("select slab_id, period, tier, min, maximum, energy_charge from slabs_mapping where state_id =" 

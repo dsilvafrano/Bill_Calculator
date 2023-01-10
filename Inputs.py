@@ -12,11 +12,11 @@ import pandas as pd
 #Inputs from users
 latitude = 9.894568695410525
 longitude = 78.07983441534354
-sload = 105 # from user
-tariff_id = 2 # consumer type
+sload = 25 # from user
+tariff_id = 1 # consumer type
 voltage_id = 1 # voltage type
 voltage = "LT"
-tariff = 'Industrial' #Domestic, Industrial, Commercial, Private, Public
+tariff = 'Domestic' #Domestic, Industrial, Commercial, Private, Public
 residence_type = 'Independent House'
 metering_id = 1
 state_id = 1
@@ -24,9 +24,9 @@ state = "Tamil Nadu"
 metering_type = "Net Feed In" #Gross Metering, Net Feed In, Net Metering
 weekend_consumption_change = -0.5
 weekend_consumption_separate = 1 # if this is 1, it means there is weekend consumption
-load_input_type = "monthwise"# monthwise & average_monthly
+load_input_type = "average_monthly"# monthwise & average_monthly
 # month_wise & average_monthly
-avg_monthly = 9013.5
+avg_monthly = 2500
 # in case of monthwise load_input_type
 mc1 = 8535
 mc2 = 8551
@@ -61,8 +61,8 @@ nyr = 26
 solar = True
 battery = True
 x1 = np.zeros(2, dtype=float)
-x1[0] = 20 # user input solar capacity
-x1[1] = 10 # user input storage capacity
+x1[0] = 9.13 # user input solar capacity
+x1[1] = 2.65 # user input storage capacity
 # print(x1[0])
 der_deg = 0.01  # solar degradation
 bat_type = 1  # battery type = 1 fo Li ion, 0 for lead acid

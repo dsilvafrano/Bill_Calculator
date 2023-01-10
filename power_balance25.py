@@ -17,9 +17,6 @@ from SOC import SOC
 # Inputs required
 solar = solar
 battery = battery
-# x1 = np.zeros(2, dtype=float)
-# x1[0] = x1[0] # user input solar capacity
-# x1[1] = x1[1] # user input storage capacity
 bat_inv = 0.835 * x1[0]
 socbatmax = socmax * x1[1]
 # print('SOC max', socbatmax)

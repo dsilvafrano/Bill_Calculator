@@ -3,22 +3,16 @@ import calendar
 import time
 
 # starting time
-import Inputs
+#Packages required
+from Inputs import tariff_id, voltage_id, state_id
 import pandas as pd
 
-import SQL
+from SQL import conn, tou_select
 
 # start = time.time()
 
 
-#Packages requires
 
-#Input required
-tou_select = SQL.tou_select
-tariff_id = Inputs.tariff_id
-voltage_id =Inputs.voltage_id
-state_id = Inputs.state_id
-conn = SQL.conn
 
 # Matrix for applying TOU
 if tou_select == 0:

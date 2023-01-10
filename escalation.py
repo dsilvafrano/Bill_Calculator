@@ -5,29 +5,25 @@ start1 = time.time()
 
 import pandas as pd
 
-import Inputs
-import SQL
+from Inputs import load_input_type, sload, state_id, voltage_id, metering_id, tariff_id
+from SQL import conn, load_esc, cost_esc
 import Monthly
 import Monthwise
-import API
-import FC_EC_calc
+from FC_EC_calc import slab_id_m
 
 #SQL connection
-conn = SQL.conn
+conn = conn
 
 # Inputs required
-load_esc = SQL.load_esc
-load_input_type = Inputs.load_input_type
-cost_esc = SQL.cost_esc
-# print(type(cost_esc))
-fixed_charge_h = FC_EC_calc.fixed_charge_h
-# print(type(fixed_charge_h))
-slab_id_m = FC_EC_calc.slab_id_m
-state_id = Inputs.state_id
-voltage_id = Inputs.voltage_id
-tariff_id = Inputs.tariff_id
-metering_id = Inputs.metering_id
-sload = Inputs.sload
+load_esc = load_esc
+load_input_type = load_input_type
+cost_esc = cost_esc
+slab_id_m = slab_id_m
+state_id = state_id
+voltage_id = voltage_id
+tariff_id = tariff_id
+metering_id = metering_id
+sload = sload
 
 if load_input_type == "average_monthly":
     user_load = Monthly.user_load['Load']
@@ -35,33 +31,6 @@ if load_input_type == "average_monthly":
 else:
     user_load = Monthwise.user_load['Load']
     # print('Load', user_load)
-
-
-# # Apply escalation to annual load
-# def annual_load_escalation(n):
-#     annual_load = pd.DataFrame()
-#     #Applying escalation for 25 years
-#     # for n in range(0,26):
-#     esc_load_n = user_load
-#     esc_load_n = esc_load_n * (1 + (n * load_esc))
-#     # annual_load.append(esc_load_n)
-#     annual_load = esc_load_n
-#     # print('Load',annual_load)
-#     return annual_load
-
-# print('The annual load for year:', sum(annual_load_escalation(0)))
-
-# apply escalation to the fixed charge calculation
-def fixed_charge_esc(n):
-    FC = fixed_charge_h
-
-    # for j in range(n, n+1):
-    FC_esc = FC * (1 + (n * cost_esc))
-
-    # print('The escalated fixed charge is:', FC_esc)
-
-    return FC_esc
-# print('The fixed charge is:', (fixed_charge_esc(0)))
 
 
 # selection of appropriate slab with respect to the monthly avg consumption & escalating it accordingly
@@ -93,7 +62,7 @@ def slab_selection(list_s):
            # print('The EC slab is:', EC_matrix)
 
     # escalation of EC
-    temp_EC = EC_matrix['energy_charge']
+    # temp_EC = EC_matrix['energy_charge']
     temp_EC = EC_matrix['energy_charge']
     EC_matrix['energy_charge'] = temp_EC * (1 + (n * cost_esc))
     slab_id_a = EC_matrix['slab_id'].max()
@@ -115,7 +84,7 @@ def slab_selection(list_s):
 
     # Escalate the TOU peak charges
     EC_p_cost_esc = pd.DataFrame(TOU_p)
-    temp_EC_p = EC_p_cost_esc['energy_charge']
+    # temp_EC_p = EC_p_cost_esc['energy_charge']
     # load_esc_years = [5, 10, 15, 20, 25]
 
     # for j in range(n, n + 1):
@@ -129,7 +98,7 @@ def slab_selection(list_s):
     # Escalate the TOU off peak charges
     # def cost_escalation_op(n):
     EC_op_cost_esc = pd.DataFrame(TOU_op)
-    temp_EC_op = EC_op_cost_esc['energy_charge']
+    # temp_EC_op = EC_op_cost_esc['energy_charge']
     # load_esc_years = [5, 10, 15, 20, 25]
 
     # for j in range(n, n + 1):
@@ -151,35 +120,6 @@ def slab_selection(list_s):
     return list_s_up
 
 # print('The selected EC table is:', float(slab_selection(200, 0)[3]['energy_charge']))
-
-# #build cost matrix for bill calculation
-# def cost_matrix(n):
-#     cost_matrix = []
-#     cost_matrix_t = 0
-#     EC_n =
-#     if load_input_type == "average_monthly":
-#         cons = Monthly.user_load['cumulative']
-#         TOU = Monthly.user_load['TOU']
-#         # print('Load', cons)
-#     else:
-#         cons = Monthwise.user_load['cumulative']
-#         TOU = Monthwise.user_load['TOU']
-#         # print('Load', cons)
-#
-#     for i in range (0,8760):
-#         cost_matrix_t = float(slab_selection(cons[i], n)[0]['energy_charge']) if (TOU[i] == 1) \
-#                             else float(slab_selection(cons[i], n)[2]['energy_charge']) if (TOU[i] == 2) \
-#                             else float(slab_selection(cons[i], n)[3]['energy_charge'])
-#         cost_matrix.append(cost_matrix_t)
-#
-#
-#     return cost_matrix
-#
-# print('cost matrix:', cost_matrix(2))
-
-
-
-
 
 # end time
 # start = Monthly.start

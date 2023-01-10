@@ -160,7 +160,7 @@ avg_in_month_op = user_load.resample('MS', on='date&time').offpeak.sum()
 # d_avg = sum(user_load['Load'])/days_n
 # avg_in_month = [i * d_avg for i in days_in_month]
 
-# print(sum(avg_in_month))
+# print((avg_in_month))
 # end time
 # end = time.time()
 #

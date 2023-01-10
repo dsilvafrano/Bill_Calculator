@@ -11,12 +11,6 @@ import Monthly
 import Monthwise
 
 #Inputs required
-# solarp = pd.DataFrame()
-
-# solarp = api(latitude,longitude)
-# Converting (Wac) to (kWac)
-# solarp['AC(kW)'] = solarp['AC(kW)']/1000
-# print(solarp[0:24])
 der_deg = der_deg
 load_input_type = load_input_type
 if load_input_type == "average_monthly":

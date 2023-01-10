@@ -3,11 +3,10 @@
 # Packages required
 import pandas as pd
 import numpy as np
-import sqlite3
-import logger
-import Inputs
+from Inputs import sload, state_id, voltage_id, metering_id, tariff_id, state, tariff, voltage, metering_type, solar, \
+    battery, bat_type, residence_type, solarpv_subsidy, nyr
 import time
-import SQL
+from SQL import pysam_dc_ac_ratio, rep_yrs_inverter, rep_yrs_battery, conn
 
 
 # starting time
@@ -15,27 +14,27 @@ start = time.time()
 
 # create connection with database
 
-conn = SQL.conn
+conn = conn
 
 # Inputs required
-state_id = Inputs.state_id
-voltage_id = Inputs.voltage_id
-tariff_id = Inputs.tariff_id
-metering_id = Inputs.metering_id
-state = Inputs.state
-tariff = Inputs.tariff
-voltage = Inputs.voltage
-metering_type = Inputs.metering_type
-sload = Inputs.sload
-solar = Inputs.solar
-battery = Inputs.battery
-bat_type = Inputs.bat_type
-residence_type = Inputs.residence_type
-pysam_dc_ac_ratio = SQL.pysam_dc_ac_ratio
-solarpv_subsidy = Inputs.solarpv_subsidy
-nyr = Inputs.nyr
-rep_yrs_battery = SQL.rep_yrs_battery
-rep_yrs_inverter = SQL.rep_yrs_inverter
+state_id = state_id
+voltage_id = voltage_id
+tariff_id = tariff_id
+metering_id = metering_id
+state = state
+tariff = tariff
+voltage = voltage
+metering_type = metering_type
+sload = sload
+solar = solar
+battery = battery
+bat_type = bat_type
+residence_type = residence_type
+pysam_dc_ac_ratio = pysam_dc_ac_ratio
+solarpv_subsidy = solarpv_subsidy
+nyr = nyr
+rep_yrs_battery = rep_yrs_battery
+rep_yrs_inverter = rep_yrs_inverter
 
 
 # Retrieve the Network charge and Compensation rate

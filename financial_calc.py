@@ -7,64 +7,22 @@ start = time.time()
 
 import pandas as pd
 import numpy as np
+import numpy_financial as npf
 
-import Inputs
-import SQL
-import Monthly
-import Monthwise
-import API
-import TOU
-import FC_EC_calc
-from escalation import slab_selection
-from power_balance25 import esc25
-from unit_w_sys25 import unit_w_sys25
-from grid_w_sys25 import grid_w_sys25
-from SQL import network_charge_fetch
+
 from Inputs import metering_type
 from Bill_w_o_sys25 import bill_w_o_sys25
-from SQL import investmentcost_calculate
-from SQL import replacement_cost
-from SQL import pysam_debt_fraction, load_esc, cost_esc, tou_select, loan_rate, loan_period,dis_factor
+from SQL import pysam_debt_fraction, cost_esc, loan_rate, loan_period,dis_factor, investmentcost_calculate,\
+    replacement_cost
 from net_metering import NM
 from net_feed_in import NF
 from gross_metering import GM
-import numpy_financial as npf
 
-from EC_calc import EC
-from bill_unitsNM import bill_unitsNM
-#SQL connection
-conn = SQL.conn
 
-# Inputs required
-x1 = np.zeros(2, dtype=float)
-x1[0] = Inputs.x1[0] # user input solar capacity
-x1[1] = Inputs.x1[1] # user input storage capacity
 ## Number of years for analysis
 nyr = 26
-# load_esc = SQL.load_esc
-# cost_esc = SQL.cost_esc
-# tou_select = SQL.tou_select
-# print(tou_select)
-# TOU matrix
-TOU = TOU.tou_matrix
+
 def financial_calc(x1):
-    # print('x1', x1)
-    # print(type(x1))
-    # load = sum(power_balance(x1, 0)[4])
-    # batpr = power_balance(x1, 0)[6]
-    # gridprin = power_balance(x1, 0)[7]
-    # exgrid = power_balance(x1, 0)[8]
-    # solpower_s = power_balance(x1, 0)[10]
-    # solpower_t = power_balance(x1, 0)[9]
-    # # Fraction of load
-    # solar_f = solpower_s/load
-    # print('The solar contribution is:',solar_f)
-    # battery_f = batpr/load
-    # print('The battery contribution is:', battery_f)
-    # grid_f = gridprin/load
-    # print('The grid contribution is:', grid_f)
-    # export_f = exgrid/solpower_t
-    # print('The export contribution is:', export_f)
     # # amount invested calculation
     sol_cap = x1[0]
     bat_cap = x1[1]
@@ -117,22 +75,10 @@ def financial_calc(x1):
 
     # print('Elec_bill_withoutDER ', Elec_bill_withoutDER[0])
     # print('Elec_bill_withDER ', Elec_bill_withDER[0])
-    # print('Solar Power : ', (solpower_s))
-    # print('Grid Power : ', (gridprin))
-    # print('Export Power : ', (exgrid))
-    # # print('Battery Power : ', sum(batpr))
-    # print('cash flow[0] :', CF[0])
-    # print('total savings[BAU] :', total_savings[0])
-    # print('total op cost :', total_op_cost[0])
-    # print('total cost :', total_cost[0])
-    # print('eq amt :', eq_amount)
 
     emi = npf.pmt(loan_rate / 12, 12 * loan_period, -loan_principal_amount, 0)
     cum_cashflow: float = 0
-    # load_k = user_load
-    # gridpr = gridprin
-    # load_esc_years = [5, 10, 15, 20, 25]
-    # load_esc_years = [4, 9, 14, 19, 24]
+
     for i in range(1,26):# Building a 25 year analysis with first year as installation year
         # starting time
         start3 = time.time()
@@ -163,8 +109,7 @@ def financial_calc(x1):
             total_cost[i] = eq_amount
         else:
             total_cost[i] = total_op_cost[i] + total_debt_yearly[i] + rep_invertercost[i] + rep_batterycost[i]
-        # print('Inv, replacement :', sum(rep_invertercost))
-        # print('Bat, replacement :', sum(rep_batterycost))
+
         CF[i] = total_savings[i] - total_cost[i]
         # print('Total saving:', total_savings[1])
         # print('Total cost:', total_cost[1])
@@ -175,7 +120,6 @@ def financial_calc(x1):
         # print(CF)
         cCF = cCF + CF[i]
         cCF_t[i] = cCF
-        # print('total_savings[0]',  total_savings[0])
 
         cum_cashflow = cum_cashflow + CF[i]
     # print('The cumulative CF is:', (cCF_t))
@@ -201,14 +145,6 @@ def financial_calc(x1):
     # print('cumcashflow:', cum_cashflow)
 
     average_annualcashflow = cum_cashflow / nyr
-    # print('average_annualcashflow:', average_annualcashflow)
-    # print(Elec_bill_withDER)
-    # print(Elec_bill_withoutDER)
-    # print(total_cost)
-    # print(CF)
-    # print('Elec. bill with sys Yr1', Elec_bill_withDER[0])
-    # print('Elec. bill w/o sys Yr1', Elec_bill_withoutDER[0])
-    # print('Solar Power : ', sum(solpower))
     average_monthlycashflow = average_annualcashflow / 12
     # print('average_monthlycashflow:', average_monthlycashflow)
 
@@ -217,20 +153,11 @@ def financial_calc(x1):
     for i in range (0,26):
         if (cCF_t[i] < 0 and cCF_t[i+1]>0):
             payback_year = ((i) + (-cCF_t[i]/CF[i+1]))+1
-    # print('The payback year is:', payback_year)
 
-    # payback_months = eq_amount / average_monthlycashflow
-    # # print('paybackmonths:', payback_months)
-    # payback_year = payback_months / 12
-    # # print('payback_year:', payback_year)
-    # payback_year = payback_year
-    # # print('paybackyear:', payback_year)
     total_savings_bill = sum(total_savings)
     roi = ((cum_cashflow) / sum(total_cost)) * 100 * (1 / 25)
     roi = roi
-    # roi = ((sum(total_savings)) /sum(total_cost)) * 100 * (1/25)
-    # print('Total cost = ' + str(sum(total_cost)))
-    # roi = (((1 + (roi_1)) ** (1/25)) - 1) * 100
+
     return npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested
 
 # print('The NPV is :',financial_calc(x1))
