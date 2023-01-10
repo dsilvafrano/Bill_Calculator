@@ -4,20 +4,15 @@ import time
 start = time.time()
 import numpy as np
 import pandas as pd
-import Inputs
 from financial_calc import financial_calc
-from Inputs import solar, battery, sload
+from Inputs import solar, battery, sload, x1
 from scipy.optimize import minimize, basinhopping
 #Define Input Method
 inputmethod = 'customize'
 # Optimisation using Scipy
-# Inputs required
-x1 = np.zeros(2, dtype=float).round(3)
-x1[0] = Inputs.x1[0] # user input solar capacity
-x1[1] = Inputs.x1[1] # user input storage capacity
-solar = solar
-battery = battery
+
 if inputmethod=='optimize':
+
 # SLSQP optimization
     # define objective: maximize Return on investment
     def objective(x1, sign=-1):
@@ -48,8 +43,8 @@ if inputmethod=='optimize':
     xx = np.zeros(2, dtype=float).round(3)
     # print(type(xx))
     if solar & battery:
-        xx[0] = sload/3
-        xx[1] = sload/6
+        xx[0] = sload/4
+        xx[1] = sload/8
         b = (1, sload)
         b1 = (0, sload * 2)
         bnds = (b, b1)
@@ -101,8 +96,8 @@ if inputmethod=='optimize':
 
 # Optimisation function
     # SLSQP optimization
-    solution = minimize(objective, xx, method='SLSQP', bounds=bnds, callback=CB, #constraints=cons,
-                        options={'ftol': 1e-2, 'disp': True, 'maxiter': 5})
+    solution = minimize(objective, xx, method='COBYLA', bounds=bnds, tol=1e-5, callback=CB, #constraints=cons,
+                        options={'disp': True, 'maxiter': 10})
 
     # SHGO optimization
     # solution1 = shgo(eggholder, bounds=bnds, n=2, iters=1, callback=CB,sampling_method='simplicial')
