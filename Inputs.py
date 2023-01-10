@@ -5,7 +5,6 @@
 import numpy as np
 import pandas as pd
 
-import time
 #
 # # starting time
 # start = time.time()
@@ -76,6 +75,9 @@ batstatus = pd.read_csv("dispatch_strategy(Teddy).csv", header=None)  # need to 
 
 solarpv_subsidy = 0
 
+ts = pd.date_range(start='2022-01-01', periods=8760, freq='1h')
+wk = ts.day_name()
+# print(solarp[0:24])
 # end time
 # end = time.time()
 #

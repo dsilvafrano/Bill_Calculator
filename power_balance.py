@@ -5,33 +5,36 @@ import time
 start = time.time()
 import pandas as pd
 import numpy as np
-import API
-import SQL
-import Inputs
+from SQL import socmin
+from Inputs import solar,battery,socin,socmax,der_deg,batstatus,metering_type,load_input_type
 import Monthly
 import Monthwise
 
 #Inputs required
-solarp = pd.DataFrame()
-solarp['AC(kW)'] = API.solarp['AC(kW)']
-der_deg = Inputs.der_deg
-load_input_type = Inputs.load_input_type
+# solarp = pd.DataFrame()
+
+# solarp = api(latitude,longitude)
+# Converting (Wac) to (kWac)
+# solarp['AC(kW)'] = solarp['AC(kW)']/1000
+# print(solarp[0:24])
+der_deg = der_deg
+load_input_type = load_input_type
 if load_input_type == "average_monthly":
     load = Monthly.user_load['Load']
 else:
     load = Monthwise.user_load['Load']
 
 n = len(load)
-solar = Inputs.solar
-battery = Inputs.battery
-batstatus =Inputs.batstatus
-socmax =Inputs.socmax
-socin =Inputs.socin
-socmin =SQL.socmin
-metering_type =Inputs.metering_type
+solar = solar
+battery = battery
+batstatus = batstatus
+socmax = socmax
+socin = socin
+socmin = socmin
+metering_type = metering_type
 
 # power balance for the selected size
-def power_balance(x1, g):
+def power_balance(x1,solarp, g):
     # starting time
     start2 = time.time()
     # print(x1[0])

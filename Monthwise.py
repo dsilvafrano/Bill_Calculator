@@ -9,40 +9,40 @@ start = time.time()
 import pandas as pd
 import numpy as np
 from calendar import monthrange
-import Inputs
-import API
-import TOU
-from datetime import date, datetime, timedelta
+from Inputs import wk,ts,weekend_consumption_separate, weekend_consumption_change,\
+    weekday_consumption_6to10,weekday_consumption_10to18,weekday_consumption_18to22,weekday_consumption_22to6,\
+    weekend_consumption_6to10,weekend_consumption_10to18,weekend_consumption_22to6,weekend_consumption_18to22,mc1,mc2,\
+    mc3,mc4,mc5,mc6,mc7,mc8,mc9,mc10,mc11,mc12
+from TOU import tou_matrix
 import datetime
 
 # print('Entering monthwise')
 
 # In case of monthwise
-monthwise = [Inputs.mc1, Inputs.mc2, Inputs.mc3, Inputs.mc4, Inputs.mc5, Inputs.mc6, Inputs.mc7, Inputs.mc8, Inputs.mc9,
-             Inputs.mc10, Inputs.mc11, Inputs.mc12]
-TOU = TOU.tou_matrix
+monthwise = [mc1, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9, mc10, mc11, mc12]
+TOU = tou_matrix
 # print(monthwise)
 
 # Retrieving dataframe with time stamp and days
-days = API.solarp['day']
-TS = API.solarp['date&time']
+days = wk
+TS = ts
 # print(days[0:24])
 # Define weekend consumption
-weekend_consumption_separate = Inputs.weekend_consumption_separate
-weekend_consumption_change = Inputs.weekend_consumption_change
+weekend_consumption_separate = weekend_consumption_separate
+weekend_consumption_change = weekend_consumption_change
 
 # Weekday consumption
-weekday_consumption_6to10 = Inputs.weekday_consumption_6to10
-weekday_consumption_10to18 = Inputs.weekday_consumption_10to18
-weekday_consumption_18to22 = Inputs.weekday_consumption_18to22
-weekday_consumption_22to6 = Inputs.weekday_consumption_22to6
+weekday_consumption_6to10 = weekday_consumption_6to10
+weekday_consumption_10to18 = weekday_consumption_10to18
+weekday_consumption_18to22 = weekday_consumption_18to22
+weekday_consumption_22to6 = weekday_consumption_22to6
 # print(weekday_consumption_22to6)
 
 # Weekend consumption
-weekend_consumption_6to10 = Inputs.weekend_consumption_6to10
-weekend_consumption_10to18 = Inputs.weekend_consumption_10to18
-weekend_consumption_18to22 = Inputs.weekend_consumption_18to22
-weekend_consumption_22to6 = Inputs.weekend_consumption_22to6
+weekend_consumption_6to10 = weekend_consumption_6to10
+weekend_consumption_10to18 = weekend_consumption_10to18
+weekend_consumption_18to22 = weekend_consumption_18to22
+weekend_consumption_22to6 = weekend_consumption_22to6
 # print(weekend_consumption_22to6)
 
 

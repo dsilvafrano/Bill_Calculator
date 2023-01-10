@@ -7,22 +7,16 @@ start = time.time()
 
 # Packages required
 import pandas as pd
-import numpy as np
-import Inputs
-import API
-import TOU
-import calendar
-from calendar import monthrange
-from datetime import date as dt
-from power_balance25 import esc25
+from Inputs import ts
+from TOU import tou_matrix
 
 # print('Entering grid units with system')
 
 # TOU matrix
-TOU = TOU.tou_matrix
+TOU = tou_matrix
 # Retrieving dataframe with time stamp and days
 # days = API.solarp['day']
-TS = API.solarp['date&time']
+TS = ts
 
 def unit_w_sys25(list):
     units = pd.DataFrame()

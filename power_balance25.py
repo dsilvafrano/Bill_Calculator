@@ -7,29 +7,33 @@ start = time.time()
 
 import pandas as pd
 import numpy as np
-import Inputs
-import SQL
+from Inputs import latitude,longitude,x1,solar,battery,socin,socmax,der_deg,batstatus,metering_type
+from API import api
+from SQL import socmin, load_esc
 from power_balance import power_balance
 from SOC import SOC
 
 
 # Inputs required
-solar = Inputs.solar
-battery = Inputs.battery
-x1 = np.zeros(2, dtype=float)
-x1[0] = Inputs.x1[0] # user input solar capacity
-x1[1] = Inputs.x1[1] # user input storage capacity
+solar = solar
+battery = battery
+# x1 = np.zeros(2, dtype=float)
+# x1[0] = x1[0] # user input solar capacity
+# x1[1] = x1[1] # user input storage capacity
 bat_inv = 0.835 * x1[0]
-socbatmax = Inputs.socmax * x1[1]
+socbatmax = socmax * x1[1]
 # print('SOC max', socbatmax)
-socbatmin = SQL.socmin * x1[1]
+socbatmin = socmin * x1[1]
 # print('SOC min', socbatmin)
-socin = Inputs.socin * x1[1]
-load_esc = SQL.load_esc
-der_deg = Inputs.der_deg
+socin = socin * x1[1]
+load_esc = load_esc
+der_deg = der_deg
 # print(der_deg)
-batstatus = Inputs.batstatus
-metering_type = Inputs.metering_type
+batstatus = batstatus
+metering_type = metering_type
+solarp = api(latitude,longitude)
+# Converting (Wac) to (kWac)
+solarp['AC(kW)'] = solarp['AC(kW)']/1000
 
 def esc25():
     #Retrieve the information from power balance
@@ -46,7 +50,7 @@ def esc25():
 
     df_batst = pd.DataFrame()
 
-    df_a = power_balance(x1,0)
+    df_a = power_balance(x1,solarp,0)
     df_l['year0'] = round(df_a[0]['load'],3)
     df_s['year0'] = round(df_a[0]['solar'],3)
     df_b['year0'] = round(df_a[0]['battery'],3)
