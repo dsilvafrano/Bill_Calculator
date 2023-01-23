@@ -2,7 +2,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+# start = time.time()
 
 import pandas as pd
 import numpy as np
@@ -74,7 +74,7 @@ def GM(x1):
 # print(GM())
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime Gross metering:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime Gross metering:', runtime)

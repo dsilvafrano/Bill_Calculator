@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+# start = time.time()
 
 import pandas as pd
 import numpy as np
@@ -27,7 +27,7 @@ def financial_calc(x1):
     sol_cap = x1[0]
     bat_cap = x1[1]
     amount_invested = investmentcost_calculate(sol_cap, bat_cap)
-    print('The total installation cost is:', amount_invested)
+    # print('The total installation cost is:', amount_invested)
     rep_batterycost, rep_invertercost = replacement_cost(sol_cap, bat_cap)
     loan_principal_amount = amount_invested * pysam_debt_fraction / 100
     eq_amount = amount_invested * (1 - (pysam_debt_fraction / 100))
@@ -48,7 +48,7 @@ def financial_calc(x1):
     NPV_to_Savings: float = 0
 
     # starting time
-    start2 = time.time()
+    # start2 = time.time()
 
     Elec_bill_withoutDER_t = bill_w_o_sys25()
     Elec_bill_withoutDER[0] = sum(Elec_bill_withoutDER_t['year0'])
@@ -63,9 +63,9 @@ def financial_calc(x1):
     # Year 0 is considered as BAU
     Elec_bill_withDER[0] = 0
 
-    end2 = time.time()
-    runtime2 = (end2 - start2)
-    print('The runtime for financial savings w sys is:', runtime2)
+    # end2 = time.time()
+    # runtime2 = (end2 - start2)
+    # print('The runtime for financial savings w sys is:', runtime2)
     total_op_cost[0] = 0# no escalation for O&M, must include
     total_cost[0] = 0
     total_savings[0] = 0
@@ -81,15 +81,15 @@ def financial_calc(x1):
 
     for i in range(1,26):# Building a 25 year analysis with first year as installation year
         # starting time
-        start3 = time.time()
+        # start3 = time.time()
         Elec_bill_withoutDER[i] = sum(Elec_bill_withoutDER_t['year' + str(i)])
         # starting time
         start1 = time.time()
         Elec_bill_withDER[i] = sum(Elec_bill_withDER_t['year' + str(i)])
         # print('THe bill with system year 1',Elec_bill_withDER[1] )
         # end time
-        end1 = time.time()
-        runtime1 = (end1 - start1)
+        # end1 = time.time()
+        # runtime1 = (end1 - start1)
         # print('The runtime for savings calculation is:',runtime1)
         total_op_cost[i] = (500 * sol_cap + 500 * bat_cap) * (1 + (i * cost_esc))
         # print('Total op cost year 2:', total_op_cost[2])
@@ -123,9 +123,9 @@ def financial_calc(x1):
 
         cum_cashflow = cum_cashflow + CF[i]
     # print('The cumulative CF is:', (cCF_t))
-    end3 = time.time()
-    runtime3 = (end3 - start3)
-    print('The runtime for financial bill w sys is:', runtime3)
+    # end3 = time.time()
+    # runtime3 = (end3 - start3)
+    # print('The runtime for financial bill w sys is:', runtime3)
     bau_npv: float = npf.npv(dis_factor, Elec_bill_withoutDER[1:nyr])
     bau_npv = (bau_npv + Elec_bill_withoutDER[0])
 
@@ -137,7 +137,7 @@ def financial_calc(x1):
     npv = npv + CF[0]
     # print('NPV:', npv)
 
-    NPV_to_Savings = ((npv / bau_npv) * 100)
+    NPV_to_Savings = ((1 - (npv / bau_npv)) * 100)
     NPV_to_Savings = NPV_to_Savings
 
     # print(npv)
@@ -163,7 +163,7 @@ def financial_calc(x1):
 # print('The NPV is :',financial_calc(x1))
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime Financial calculation:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime Financial calculation:', runtime)

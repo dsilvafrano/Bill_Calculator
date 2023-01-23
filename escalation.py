@@ -1,7 +1,7 @@
 # Packages required
 import time
 # # starting time
-start1 = time.time()
+# start1 = time.time()
 
 import pandas as pd
 
@@ -36,7 +36,9 @@ else:
 # selection of appropriate slab with respect to the monthly avg consumption & escalating it accordingly
 def slab_selection(list_s):
     avg_monthly = list_s[0]
+    # print(avg_monthly)
     n = list_s[1]
+    # print(n)
     # starting time
     start1 = time.time()
     # Selection of slab by taking a monthly average of 8760 points
@@ -58,9 +60,10 @@ def slab_selection(list_s):
         # print('The whole slab', EC_t)
         if float(max_slab) > float(avg_monthly) and float(avg_monthly) > float(min_slab):
             EC_matrix = EC_t
+            # print(s)
             break
            # print('The EC slab is:', EC_matrix)
-
+    # print(EC_matrix)
     # escalation of EC
     # temp_EC = EC_matrix['energy_charge']
     temp_EC = EC_matrix['energy_charge']
@@ -123,9 +126,9 @@ def slab_selection(list_s):
 
 # end time
 # start = Monthly.start
-end = time.time()
-#
-# runtime = (end - start)
-runtime1 = (end - start1)
-# print('The runtime Total:', runtime)
-print('The runtime Escalation:', runtime1)
+# end = time.time()
+# #
+# # runtime = (end - start)
+# runtime1 = (end - start1)
+# # print('The runtime Total:', runtime)
+# print('The runtime Escalation:', runtime1)

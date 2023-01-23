@@ -2,7 +2,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+# start = time.time()
 
 import pandas as pd
 import numpy as np
@@ -23,7 +23,7 @@ from EC_calc import EC
 # Function to do the bill calculation
 def NF(x1):
     # starting time
-    start1 = time.time()
+    # start1 = time.time()
     bill_amt_25 = pd.DataFrame()
     #Network charge and compensation rate
     NC = network_charge_fetch(x1[0])[0]
@@ -71,16 +71,16 @@ def NF(x1):
         bill_amt_25['year' + str(n)] = temp
     # print(bill_amt_25)
     # end time
-    end1 = time.time()
-
-    runtime1 = (end1 - start1)
-    print('The runtime Net Feed In inside:',runtime1)
+    # end1 = time.time()
+    #
+    # runtime1 = (end1 - start1)
+    # print('The runtime Net Feed In inside:',runtime1)
     return bill_amt_25
 
 # print(round(NF(),3))
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime Net Feed In:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime Net Feed In:', runtime)
