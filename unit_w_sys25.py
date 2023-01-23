@@ -3,7 +3,7 @@
 import time
 
 # starting time
-start = time.time()
+# start = time.time()
 
 # Packages required
 import pandas as pd
@@ -66,9 +66,9 @@ def unit_w_sys25(list):
 # print((unit_w_sys25(esc25()[2],esc25()[3],esc25()[4])))
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime units with system 25 year:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime units with system 25 year:', runtime)
 
 

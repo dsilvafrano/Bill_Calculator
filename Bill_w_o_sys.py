@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+# start = time.time()
 
 import pandas as pd
 
@@ -59,7 +59,7 @@ def bill_w_o_sys(n):
 # print(bill_w_o_sys(0))
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime Bill without system inside:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime Bill without system inside:', runtime)

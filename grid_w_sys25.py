@@ -3,7 +3,7 @@
 import time
 
 # starting time
-start = time.time()
+# start = time.time()
 
 # Packages required
 import pandas as pd
@@ -65,7 +65,7 @@ def grid_w_sys25(x1):
 
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime grid with system 25 year:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime grid with system 25 year:', runtime)

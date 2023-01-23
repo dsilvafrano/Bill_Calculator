@@ -1,8 +1,8 @@
 #Calculate the total bill when metering type is Net Metering
 # Packages required
 import time
-# starting time
-start = time.time()
+# # starting time
+# start = time.time()
 
 import pandas as pd
 import numpy as np
@@ -21,7 +21,7 @@ from bill_unitsNM import bill_unitsNM
 # Function to do the bill calculation
 def NM(x1):
     # starting time
-    start1 = time.time()
+    # start1 = time.time()
     bill_amt_25 = pd.DataFrame()
     bill_unit_25 = pd.DataFrame()
     #Network charge and compensation rate
@@ -42,7 +42,7 @@ def NM(x1):
         FC = FC_m * (1 + (n * cost_esc))
         # Units information stored in variable
         g_units = (bill_unit_25['year' + str(n)])
-        # print((g_units[1][0]))
+        # print((g_units[0]))
         e_units = bill_unit_25['year' + str(n)][4]
         # print(e_units['year25'])
         bill_amt = 0
@@ -52,6 +52,7 @@ def NM(x1):
 # #Calculation of bill for 12 months of a year
         for i in range(0,12):
             list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n]
+            # print(list_m)
         #     # Variable for 25 year analysis
             EC_t = EC(list_m)
         # #Calculate the network charge applicable
@@ -66,16 +67,16 @@ def NM(x1):
         bill_amt_25['year' + str(n)] = temp
     # print(bill_amt_25)
     # end time
-    end1 = time.time()
-
-    runtime1 = (end1 - start1)
-    print('The runtime Net Metering inside:', i, runtime1)
+    # end1 = time.time()
+    #
+    # runtime1 = (end1 - start1)
+    # print('The runtime Net Metering inside:', i, runtime1)
     return bill_amt_25
 
 # print(NM())
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime Net Metering:', runtime)
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime Net Metering:', runtime)

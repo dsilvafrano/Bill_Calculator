@@ -12,11 +12,11 @@ import pandas as pd
 #Inputs from users
 latitude = 9.894568695410525
 longitude = 78.07983441534354
-sload = 25 # from user
-tariff_id = 1 # consumer type
-voltage_id = 1 # voltage type
-voltage = "LT"
-tariff = 'Domestic' #Domestic, Industrial, Commercial, Private, Public
+sload = 125 # from user
+tariff_id = 2 # consumer type
+voltage_id = 2 # voltage type
+voltage = "HT"
+tariff = 'Industrial' #Domestic, Industrial, Commercial, Private, Public
 residence_type = 'Independent House'
 metering_id = 1
 state_id = 1
@@ -26,7 +26,7 @@ weekend_consumption_change = -0.5
 weekend_consumption_separate = 1 # if this is 1, it means there is weekend consumption
 load_input_type = "average_monthly"# monthwise & average_monthly
 # month_wise & average_monthly
-avg_monthly = 2500
+avg_monthly = 9000
 # in case of monthwise load_input_type
 mc1 = 8535
 mc2 = 8551

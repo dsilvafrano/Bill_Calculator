@@ -3,7 +3,7 @@ import calendar
 import time
 
 # starting time
-start = time.time()
+# start = time.time()
 
 # Packages required
 import pandas as pd
@@ -183,10 +183,10 @@ avg_in_month_op = user_load.resample('MS', on='date&time').offpeak.sum()
 # print(avg_in_month_op)
 # print(bill_units)
 
-# end time
-end = time.time()
-
-runtime = (end - start)
-print('The runtime Monthwise:', runtime)
+# # end time
+# end = time.time()
+#
+# runtime = (end - start)
+# print('The runtime Monthwise:', runtime)
 
 
