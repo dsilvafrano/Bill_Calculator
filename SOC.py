@@ -31,17 +31,15 @@ def SOC(ch_dis_available, x1):
 
 	for i in range(n - 1):
 		k = i + 1
-		if batstatus[k] == -1:
-			if (ch_dis_available[k] + soc[k - 1]) < socbatmax:
-				soc[k] = ch_dis_available[k] + soc[k - 1]
-			else:
-				soc[k] = socbatmax
-		if batstatus[k] == 1:
-			if (soc[k - 1] - ch_dis_available[k]) > socbatmin:
-				soc[k] = soc[k - 1] - ch_dis_available[k]
-			else:
-				soc[k] = socbatmin
-		elif batstatus[k] == 0:
+		if batstatus[k] == -1 and (ch_dis_available[k] + soc[k - 1]) < socbatmax:
+			soc[k] = ch_dis_available[k] + soc[k - 1]
+		else:
+			soc[k] = socbatmax
+		if batstatus[k] == 1 and (soc[k - 1] - ch_dis_available[k]) > socbatmin:
+			soc[k] = soc[k - 1] - ch_dis_available[k]
+		else:
+			soc[k] = socbatmin
+		if batstatus[k] == 0:
 			soc[k] = soc[k - 1]
 
 		battery_power[k] = soc[k - 1] - soc[k]  # calculating actual battery discharging and charging power

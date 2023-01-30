@@ -32,11 +32,12 @@ def NF(x1):
     # # Fixed charge and Energy charge details
     FC_m = fixed_charge_m
     ##Grid units : Has value for total, normal, peak & offpeak units
-    g_units_t = (grid_w_sys25(x1))
+    g_units_T = (grid_w_sys25(x1))
+    g_units_t = g_units_T[0]
     # print((g_units[0][0]))
     ##Solar, battery and export units
-    a_units_t = esc25(x1)
-    list = [a_units_t[2], a_units_t[3], a_units_t[4]]
+    a_units_t = g_units_T[1]
+    list = [a_units_t[0], a_units_t[1], a_units_t[2]]
     a_units = (unit_w_sys25(list))
     # print(a_units[0]['year25'])
     #Calculation of bill for 25 years

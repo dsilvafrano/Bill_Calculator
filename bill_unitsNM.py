@@ -16,7 +16,8 @@ def bill_unitsNM(x1):
     bill_unit_25 = pd.DataFrame()
 
     ##Grid units : Has value for total, normal, peak & offpeak units
-    g_units = (grid_w_sys25(x1))
+    g_units_T = (grid_w_sys25(x1))
+    g_units = (g_units_T[0])
     g_units_t = g_units.loc[0]
     g_units_n = g_units.loc[1]
     g_units_p = g_units.loc[2]
@@ -26,8 +27,8 @@ def bill_unitsNM(x1):
     # print(g_units_p['year0'])
     # print(g_units_op['year0'])
     # ##Solar, battery and export units
-    a_units_t = esc25(x1)
-    list = [a_units_t[2], a_units_t[3], a_units_t[4]]
+    a_units_t = g_units_T[1]
+    list = [a_units_t[0], a_units_t[1], a_units_t[2]]
     a_units = (unit_w_sys25(list))
     s_units = a_units[0]
     b_units = a_units[1]

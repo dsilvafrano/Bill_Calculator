@@ -127,8 +127,13 @@ def slab_selection(list_s):
 # end time
 # start = Monthly.start
 # end = time.time()
-# #
-# # runtime = (end - start)
-# runtime1 = (end - start1)
+# # #
+# runtime = (end - start1)
+#start time
+# start = time.time()
+# print('Result:', slab_selection([5000,0]))
+# # end time
+# end1 = time.time()
+# runtime1 = (end1 - start)
 # # print('The runtime Total:', runtime)
 # print('The runtime Escalation:', runtime1)

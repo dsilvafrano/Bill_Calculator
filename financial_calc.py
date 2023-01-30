@@ -4,7 +4,7 @@
 import time
 # starting time
 # start = time.time()
-
+# from line_profiler import LineProfiler
 import pandas as pd
 import numpy as np
 import numpy_financial as npf
@@ -160,8 +160,15 @@ def financial_calc(x1):
 
     return npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested
 
-# print('The NPV is :',financial_calc(x1))
-
+# print('The NPV is :',financial_calc([10,1]))
+# profiler = LineProfiler()
+# profiler.add_function(financial_calc)
+#
+# # Run the profiler
+# profiler.runcall(financial_calc,[125,1])
+#
+# # print the results
+# profiler.print_stats()
 # end time
 # end = time.time()
 #
