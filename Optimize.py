@@ -3,6 +3,8 @@
 #Packages required
 import time
 # starting time
+import numpy as np
+
 start = time.time()
 
 from financial_calc import financial_calc
@@ -53,12 +55,37 @@ def objective(trial):
     return (financial_calc(x1)[7])
 #optuna optimiser
 study = optuna.create_study()
-study.optimize(objective, n_trials=5,catch=(TypeError,))
+study.optimize(objective, n_trials=5,catch=(TypeError,IndexError,))
 
 # study.best_params
 print('Param:',study.best_params)
 print('Trial:',study.best_trial)
 print('Value:',study.best_value)
+
+#Run the finincial cal with best parameters
+# Vfun = np.vectorize(financial_calc)
+x = study.best_params.get('x')
+# Vx = np.vectorize(x)
+# print('The solar capacity is:',x)
+y = study.best_params.get('y')
+# Vy = np.vectorize(y)
+# print('The battery capacity is:',y)
+x1 = [x,y]
+# x1 = [x,y]
+# print('The array:', x1)
+Result = financial_calc(x1)
+# Result = np.fromiter((financial_calc(x1)),dtype='float')
+#printing the results
+print('NPV = ' + str(Result[0]))
+print('payback year = ' + str(Result[1]))
+print('cumulative cash flow = ' + str(Result[2]))
+print('return on investment = ' + str(Result[3]))
+print('total savings on bill = ' + str(Result[4]))
+print('NPV for BAU = ' + str(Result[5]))
+print('Discounted Total Savings = ' + str(Result[6]))
+print('NPV(BAU) to dis.Savings = ' + str(100-Result[7]))
+a1 = [x1[0], x1[1], Result]
+print('The result is:', a1)
 
 # obj = []
 # # zaxis = []
