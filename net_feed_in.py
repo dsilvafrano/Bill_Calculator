@@ -34,12 +34,17 @@ def NF(x1):
     ##Grid units : Has value for total, normal, peak & offpeak units
     g_units_T = (grid_w_sys25(x1))
     g_units_t = g_units_T[0]
-    # print((g_units[0][0]))
+    g_units_yr0 = sum((g_units_t)['year0'][0])
+    # print(sum(g_units_t['year0'][1]))
+
     ##Solar, battery and export units
     a_units_t = g_units_T[1]
     list = [a_units_t[0], a_units_t[1], a_units_t[2]]
+    s_units_yr0 = sum(a_units_t[0]['year0'])
+    b_units_yr0 = sum(a_units_t[1]['year0'])
+    e_units_yr0 = sum(a_units_t[2]['year0'])
     a_units = (unit_w_sys25(list))
-    # print(a_units[0]['year25'])
+    # print(a_units[0]['year0'])
     #Calculation of bill for 25 years
     for n in range(0,26):
         FC = FC_m * (1 + (n * cost_esc))
@@ -70,13 +75,13 @@ def NF(x1):
         temp = bill_amt_m
         # print(bill_amt_m)
         bill_amt_25['year' + str(n)] = temp
-    # print(bill_amt_25)
+    # print(g_units)
     # end time
     # end1 = time.time()
     #
     # runtime1 = (end1 - start1)
     # print('The runtime Net Feed In inside:',runtime1)
-    return bill_amt_25
+    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0
 
 # print(round(NF(),3))
 

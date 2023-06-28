@@ -12,21 +12,21 @@ import pandas as pd
 #Inputs from users
 latitude = 9.894568695410525
 longitude = 78.07983441534354
-sload = 125 # from user
-tariff_id = 2 # consumer type
-voltage_id = 2 # voltage type
-voltage = "HT"
-tariff = 'Industrial' #Domestic, Industrial, Commercial, Private, Public
+sload = 9 # from user
+tariff_id = 1 # consumer type
+voltage_id = 1 # voltage type
+voltage = "LT"
+tariff = 'Domestic' #Domestic, Industrial, Commercial, Private, Public
 residence_type = 'Independent House'
-metering_id = 1
+metering_id = 7
 state_id = 1
 state = "Tamil Nadu"
-metering_type = "Net Feed In" #Gross Metering, Net Feed In, Net Metering
-weekend_consumption_change = -0.5
+metering_type = "Net Metering" #Gross Metering, Net Feed In, Net Metering
+weekend_consumption_change = 0.5
 weekend_consumption_separate = 1 # if this is 1, it means there is weekend consumption
 load_input_type = "average_monthly"# monthwise & average_monthly
 # month_wise & average_monthly
-avg_monthly = 9000
+avg_monthly = 210
 # in case of monthwise load_input_type
 mc1 = 8535
 mc2 = 8551
@@ -42,9 +42,9 @@ mc11 = 8184
 mc12 = 7407
 
 # Define load distribution for 24hrs weekday
-weekday_consumption_6to10 = 10
-weekday_consumption_10to18 = 70
-weekday_consumption_18to22 = 10
+weekday_consumption_6to10 = 20
+weekday_consumption_10to18 = 50
+weekday_consumption_18to22 = 20
 weekday_consumption_22to6 = 10
 
 
@@ -59,7 +59,7 @@ weekend_consumption_22to6 = 10
 # tou_select = 0
 nyr = 26
 solar = True
-battery = True
+battery = False
 # x1 = np.zeros(2, dtype=float)
 # x1[0] = 9.82 # user input solar capacity
 # x1[1] = 1.28 # user input storage capacity

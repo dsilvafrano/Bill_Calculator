@@ -202,10 +202,12 @@ if inputmethod=='optimize':
 else:
 # Customise run inputs and results display
     a =np.zeros(2, dtype=float).round(3)
-    a[0] = 117.47775177779495 # user input solar capacity
+    a[0] = 1 # user input solar capacity
     # # a[0]= 26.126338006179388 # user input solar capacity
-    a[1]= 27.716288785959108 # user input storage capacity
-    npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested=financial_calc(a)
+    a[1]= 0 # user input storage capacity
+    npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested\
+        ,  average_annualcashflow,s_unit_yr1,grid_contri,solar_contri,batt_contri,export_contri, Av_emission_CO2, \
+        Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area=financial_calc(a)
 
     end = time.time()
     # total time taken
@@ -215,13 +217,23 @@ else:
 
     print('NPV = ' + str(npv))
     print('payback year = ' + str(payback_year))
-    print('cumulative cash flow = ' + str(cum_cashflow))
+    print('25 yr savings = ' + str(cum_cashflow))
     print('return on investment = ' + str(roi))
-    print('total savings on bill = ' + str(total_savings_bill))
-    print('NPV for BAU = ' + str(bau_npv))
-    print('Discounted Total Savings = ' + str(dis_saving))
+    print('% of savings in 25 yrs = ' + str((cum_cashflow/sum(Elec_bill_withoutDER))*100))
+    print('Grid contribution = ' + str(grid_contri))
+    print('Solar contribution = ' + str(solar_contri))
+    print('Batt contribution = ' + str(batt_contri))
+    print('Export contribution = ' + str(export_contri))
     print('NPV(BAU) to dis.Savings = ' + str(100-NPV_to_Savings))
-    a1 = [a[0], a[1], npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested]
+    print('Shade free area(m2) = ' + str(shade_free_area))
+    print('Avg. annual Savings = ' + str(average_annualcashflow))
+    print('Avg. solar gen for yr 1 = ' + str(s_unit_yr1))
+    print('Av_emission_CO2 for yr 1 = ' + str(Av_emission_CO2))
+    print('Load for yr 1 = ' + str(sum(Yr1_units)))
+    print('Electric bill w/o sys =' + str(sum(Elec_bill_withoutDER)))
+    print('Electric bill w sys =' + str(sum(Elec_bill_withDER)))
+    a1 = [a[0], a[1], npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings,
+          amount_invested,average_annualcashflow,s_unit_yr1, Av_emission_CO2]
     print(a1)
 
 

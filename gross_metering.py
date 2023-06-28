@@ -32,10 +32,14 @@ def GM(x1):
     ##Grid units : Has value for total, normal, peak & offpeak units
     g_units_T = (grid_w_sys25(x1))
     g_units_t = g_units_T[0]
+    g_units_yr0 = sum((g_units_t)['year0'][0])
     # print((g_units[0][0]))
     ##Solar, battery and export units
     a_units_t = g_units_T[1]
     list = [a_units_t[0], a_units_t[1], a_units_t[2]]
+    s_units_yr0 = sum(a_units_t[0]['year0'])
+    b_units_yr0 = sum(a_units_t[1]['year0'])
+    e_units_yr0 = sum(a_units_t[2]['year0'])
     a_units = (unit_w_sys25(list))
     # print(a_units[0]['year25'])
     #Calculation of bill for 25 years
@@ -70,7 +74,7 @@ def GM(x1):
         # print(bill_amt_m)
         bill_amt_25['year' + str(n)] = temp
     # print(bill_amt_25)
-    return bill_amt_25
+    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0
 
 # print(GM())
 

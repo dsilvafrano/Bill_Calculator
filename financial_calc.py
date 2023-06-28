@@ -10,7 +10,9 @@ import numpy as np
 import numpy_financial as npf
 
 
-from Inputs import metering_type
+from Inputs import metering_type, load_input_type
+from Monthly import avg_in_month
+import Monthwise
 from Bill_w_o_sys25 import bill_w_o_sys25
 from SQL import pysam_debt_fraction, cost_esc, loan_rate, loan_period,dis_factor, investmentcost_calculate,\
     replacement_cost
@@ -23,6 +25,12 @@ from gross_metering import GM
 nyr = 26
 
 def financial_calc(x1):
+    if load_input_type == "average_monthly":
+        Yr1_units = avg_in_month
+    else:
+        Yr1_units = Monthwise.avg_in_month
+
+    # print('Yr 1 load:',sum(Yr1_units))
     # # amount invested calculation
     sol_cap = x1[0]
     bat_cap = x1[1]
@@ -54,11 +62,32 @@ def financial_calc(x1):
     Elec_bill_withoutDER[0] = sum(Elec_bill_withoutDER_t['year0'])
 
     if metering_type == "Net Metering":
-        Elec_bill_withDER_t = NM(x1)
+        Elec_bill_withDER_T = NM(x1)
+        Elec_bill_withDER_t = Elec_bill_withDER_T[0]
+        g_unit_yr1 = Elec_bill_withDER_T[3]
+        s_unit_yr1 = Elec_bill_withDER_T[1]
+        b_unit_yr1 = Elec_bill_withDER_T[4]
+        e_unit_yr1 = Elec_bill_withDER_T[2]
+        avg_annual_solar = (s_unit_yr1)/365
+        # print('Solar:', s_unit_yr1)
     elif metering_type == "Net Feed In":
-        Elec_bill_withDER_t = NF(x1)
+        Elec_bill_withDER_T = NF(x1)
+        Elec_bill_withDER_t = Elec_bill_withDER_T[0]
+        g_unit_yr1 = Elec_bill_withDER_T[3]
+        s_unit_yr1 = Elec_bill_withDER_T[1]
+        b_unit_yr1 = Elec_bill_withDER_T[4]
+        e_unit_yr1 = Elec_bill_withDER_T[2]
+        avg_annual_solar = (s_unit_yr1)/365
+        # print('Solar:', (g_unit_yr1))
     else:
-        Elec_bill_withDER_t = GM(x1)
+        Elec_bill_withDER_T = GM(x1)
+        Elec_bill_withDER_t = Elec_bill_withDER_T[0]
+        g_unit_yr1 = Elec_bill_withDER_T[3]
+        s_unit_yr1 = Elec_bill_withDER_T[1]
+        b_unit_yr1 = Elec_bill_withDER_T[4]
+        e_unit_yr1 = Elec_bill_withDER_T[2]
+        avg_annual_solar = (s_unit_yr1) / 365
+        # print('Solar:', (g_unit_yr1))
 
     # Year 0 is considered as BAU
     Elec_bill_withDER[0] = 0
@@ -148,6 +177,38 @@ def financial_calc(x1):
     average_monthlycashflow = average_annualcashflow / 12
     # print('average_monthlycashflow:', average_monthlycashflow)
 
+    # Shade free area 10m2 for 1kW panel
+    shade_free_area = 10 * sol_cap
+
+    # Contribution of solar, grid & battery
+
+    sum_load = sum(Yr1_units)
+    print('sum of load', sum(Yr1_units))
+    # sum_grid = sum(g_unit_yr1)
+    # sum_solar = sum(s_unit_yr1)
+    # sum_batt = sum(b_unit_yr1)
+    # sum_export = sum(e_unit_yr1)
+    # sum_load = sum_grid+sum_solar+sum_batt
+
+    grid_contri = (g_unit_yr1/sum_load)*100
+    # solar_contri = ((s_unit_yr1-b_unit_yr1) / sum_load) * 100
+    # batt_contri = (b_unit_yr1 / sum_load) * 100
+    if metering_type == "Gross Metering":
+        solar_contri = 0
+        batt_contri = 0
+    else:
+        solar_contri = ((s_unit_yr1 - b_unit_yr1 - e_unit_yr1) / sum_load) * 100
+        batt_contri = (b_unit_yr1 / sum_load) * 100
+
+    export_contri = (e_unit_yr1 / s_unit_yr1) * 100
+    # grid_contri = g_unit_yr1
+    # solar_contri = s_unit_yr1
+    # batt_contri = b_unit_yr1
+    # export_contri = e_unit_yr1
+
+
+    # Emission factor CO2 yr 1
+    Av_emission_CO2 = ((s_unit_yr1) * 0.793)/1000 # Emission factor for coal
     # Calculation of payback period
     payback_year = 0
     for i in range (0,26):
@@ -158,7 +219,9 @@ def financial_calc(x1):
     roi = ((cum_cashflow) / sum(total_cost)) * 100 * (1 / 25)
     roi = roi
 
-    return npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested
+    return npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, \
+           amount_invested, average_annualcashflow,avg_annual_solar,grid_contri,solar_contri,batt_contri,export_contri,\
+           Av_emission_CO2, Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area
 
 # print('The NPV is :',financial_calc([10,1]))
 # profiler = LineProfiler()

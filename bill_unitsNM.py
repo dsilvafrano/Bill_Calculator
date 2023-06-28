@@ -67,7 +67,7 @@ def bill_unitsNM(x1):
             t_units[i] = (n_units[i] + p_units[i] + op_units[i])
         units_25['year' + str(n)] = [t_units, n_units, p_units, op_units, e_units_up, s_units, b_units]
     # print(units_25)
-    return units_25
+    return units_25, e_units
 
 # print(bill_unitsNM())
 

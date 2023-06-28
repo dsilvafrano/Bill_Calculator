@@ -31,10 +31,22 @@ def NM(x1):
     # # Fixed charge and Energy charge details
     FC_m = fixed_charge_m
     ##Bill units has value for Total, Normal, peak, offpeak, export and excess updated for each month
-    bill_unit_25 = (bill_unitsNM(x1))
+    bill_unit_25_T = (bill_unitsNM(x1))
+    bill_unit_25 = (bill_unit_25_T[0])
+    print(sum(bill_unit_25['year0'][0]))
+    e_unit_25 = (bill_unit_25_T[1])
+    e_unit_yr0 = (e_unit_25)
+    e_units_yr0 = sum(e_unit_yr0['year0'])
+    g_units_yr0 = sum(bill_unit_25['year0'][0])
+
+
+
+
     s_units = bill_unit_25['year0'][5]
-    # print(s_units)
+    s_units_yr0 = sum(s_units['year0'])
     b_units = bill_unit_25['year0'][6]
+    b_units_yr0 = sum(b_units['year0'])
+    # print(e_unit_yr0['year0'])
     # print(b_units['year25'])
 
     #Calculation of bill for 25 years
@@ -71,7 +83,7 @@ def NM(x1):
     #
     # runtime1 = (end1 - start1)
     # print('The runtime Net Metering inside:', i, runtime1)
-    return bill_amt_25
+    return bill_amt_25, s_units_yr0, e_units_yr0, g_units_yr0,b_units_yr0
 
 # print(NM())
 
