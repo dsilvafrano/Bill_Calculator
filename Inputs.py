@@ -12,48 +12,48 @@ import pandas as pd
 #Inputs from users
 latitude = 9.894568695410525
 longitude = 78.07983441534354
-sload = 9 # from user
+sload = 10 # from user
 tariff_id = 1 # consumer type
 voltage_id = 1 # voltage type
 voltage = "LT"
 tariff = 'Domestic' #Domestic, Industrial, Commercial, Private, Public
 residence_type = 'Independent House'
-metering_id = 7
+metering_id =1
 state_id = 1
 state = "Tamil Nadu"
-metering_type = "Net Metering" #Gross Metering, Net Feed In, Net Metering
-weekend_consumption_change = 0.5
+metering_type = "Net Feed In" #Gross Metering, Net Feed In, Net Metering
+weekend_consumption_change = 0.25
 weekend_consumption_separate = 1 # if this is 1, it means there is weekend consumption
 load_input_type = "average_monthly"# monthwise & average_monthly
 # month_wise & average_monthly
-avg_monthly = 210
+avg_monthly = 600
 # in case of monthwise load_input_type
-mc1 = 8535
-mc2 = 8551
-mc3 = 8444
-mc4 = 10483
-mc5 = 6810
-mc6 = 6763
-mc7 = 9963
-mc8 = 10540
-mc9 = 11310
-mc10 = 11174
-mc11 = 8184
-mc12 = 7407
+mc1 = 100
+mc2 = 100
+mc3 = 100
+mc4 = 100
+mc5 = 100
+mc6 = 100
+mc7 = 100
+mc8 = 100
+mc9 = 100
+mc10 = 100
+mc11 = 100
+mc12 = 100
 
 # Define load distribution for 24hrs weekday
-weekday_consumption_6to10 = 20
-weekday_consumption_10to18 = 50
-weekday_consumption_18to22 = 20
-weekday_consumption_22to6 = 10
+weekday_consumption_6to10 = 30
+weekday_consumption_10to18 = 10
+weekday_consumption_18to22 = 40
+weekday_consumption_22to6 = 20
 
 
 # Define load distribution for 24hrs weekend
 
 
 weekend_consumption_6to10 = 20
-weekend_consumption_10to18 = 50
-weekend_consumption_18to22 = 20
+weekend_consumption_10to18 = 40
+weekend_consumption_18to22 = 30
 weekend_consumption_22to6 = 10
 
 # tou_select = 0
@@ -65,7 +65,7 @@ battery = False
 # x1[1] = 1.28 # user input storage capacity
 # print(x1[0])
 der_deg = 0.01  # solar degradation
-bat_type = 1  # battery type = 1 fo Li ion, 0 for lead acid
+bat_type = 0  # battery type = 1 fo Li ion, 0 for lead acid
 socin = 0.2
 socmax = 0.9
 
@@ -73,7 +73,7 @@ socmax = 0.9
 batstatus = pd.read_csv("dispatch_strategy(Teddy).csv", header=None)  # need to be replaced with the actual dispatch strategy
 # print(batstatus[24:48])
 
-solarpv_subsidy = 0
+solarpv_subsidy = 1000
 
 ts = pd.date_range(start='2022-01-01', periods=8760, freq='1h')
 wk = ts.day_name()

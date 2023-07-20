@@ -46,7 +46,7 @@ weekend_consumption_22to6 = weekend_consumption_22to6
 
 
 # Building an empty a dataframe to store hourly values
-user_load_n = np.array(([0] * 24), dtype=float)
+avg_user_load_n = np.array(([0] * 24), dtype=float)
 
 # Determining the percentage share of weekday and weekend
 
@@ -77,14 +77,14 @@ if int(weekend_consumption_separate) == 1:
 
 #In the case the weekend_consumption_separate == 0
 if int(weekend_consumption_separate) == 0:
-    user_load_n[6:10] = round((weekday_consumption_6to10n * avg_monthly * 12 / (365 * 4)), 3)
-    user_load_n[10:18] = round((weekday_consumption_10to18n * avg_monthly * 12 / (365 * 8)), 3)
-    user_load_n[18:22] = round((weekday_consumption_18to22n * avg_monthly * 12 / (365 * 4)), 3)
-    user_load_n[22:24] = round((weekday_consumption_22to6n * avg_monthly * 12 * 0.25 / (365 * 2)), 3)
-    user_load_n[0:6] = round((weekday_consumption_22to6n * avg_monthly * 12 * 0.75 / (365 * 6)), 3)
+    avg_user_load_n[6:10] = round((weekday_consumption_6to10n * avg_monthly * 12 / (365 * 4)), 3)
+    avg_user_load_n[10:18] = round((weekday_consumption_10to18n * avg_monthly * 12 / (365 * 8)), 3)
+    avg_user_load_n[18:22] = round((weekday_consumption_18to22n * avg_monthly * 12 / (365 * 4)), 3)
+    avg_user_load_n[22:24] = round((weekday_consumption_22to6n * avg_monthly * 12 * 0.25 / (365 * 2)), 3)
+    avg_user_load_n[0:6] = round((weekday_consumption_22to6n * avg_monthly * 12 * 0.75 / (365 * 6)), 3)
 
 # Applying the daily consumption to the whole year
-    user_load_n = np.tile(user_load_n, 365)
+    avg_user_load_n = np.tile(avg_user_load_n, 365)
 
     # print(sum(user_load)/12)
 else:
@@ -114,16 +114,16 @@ else:
         else:
             df_load.extend(weekday_24)
 
-    user_load_n = df_load
-    # print('Monthly',sum(df_load))
+    avg_user_load_n = df_load
+    # print('Monthly',len(df_load))
 # date = date.today()
 # year = date.year
 # days_n =366 if calendar.isleap(year) else 365
 
 user_load = pd.DataFrame()
-avg_in_month = []
+avg_in_month_m = []
 user_load['date&time'] = TS
-user_load['Load'] = user_load_n
+user_load['Load'] = avg_user_load_n
 # cumulated for every hour of the month
 user_load['cumulative'] = user_load.groupby((user_load['date&time']).dt.month)['Load'].cumsum()
 user_load['TOU'] = TOU
@@ -138,13 +138,13 @@ user_load['offpeak'] = np.where(user_load['TOU'] == 3, user_load['Load'], 0)
 # user_load['cumulative_OP'] = user_load.groupby((user_load['date&time']).dt.month)['offpeak'].cumsum()
 
 # # data re-sampled based on each month(gives 12 values with sum for each month)
-avg_in_month = user_load.resample('MS', on='date&time').Load.sum()
-avg_in_month_n = user_load.resample('MS', on='date&time').normal.sum()
-avg_in_month_p = user_load.resample('MS', on='date&time').peak.sum()
-avg_in_month_op = user_load.resample('MS', on='date&time').offpeak.sum()
+avg_in_month_m = user_load.resample('MS', on='date&time').Load.sum()
+avg_in_month_m_n = user_load.resample('MS', on='date&time').normal.sum()
+avg_in_month_m_p = user_load.resample('MS', on='date&time').peak.sum()
+avg_in_month_m_op = user_load.resample('MS', on='date&time').offpeak.sum()
 # print((user_load[0:24]))
-# print(avg_in_month, avg_in_month_n, avg_in_month_p, avg_in_month_op)
-# print(avg_in_month)
+# print(avg_in_month_m, avg_in_month_m_n, avg_in_month_m_p, avg_in_month_m_op)
+# print(avg_in_month_m)
 
 
 # print(days)
@@ -158,9 +158,9 @@ avg_in_month_op = user_load.resample('MS', on='date&time').offpeak.sum()
 #
 # # Build a matrix for average monthly of each month
 # d_avg = sum(user_load['Load'])/days_n
-# avg_in_month = [i * d_avg for i in days_in_month]
+# avg_in_month_m = [i * d_avg for i in days_in_month]
 
-# print((avg_in_month))
+# print((avg_in_month_m))
 # end time
 # end = time.time()
 #

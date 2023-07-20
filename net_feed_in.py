@@ -35,6 +35,7 @@ def NF(x1):
     g_units_T = (grid_w_sys25(x1))
     g_units_t = g_units_T[0]
     g_units_yr0 = sum((g_units_t)['year0'][0])
+    g_units_8760 = g_units_T[2]
     # print(sum(g_units_t['year0'][1]))
 
     ##Solar, battery and export units
@@ -81,7 +82,7 @@ def NF(x1):
     #
     # runtime1 = (end1 - start1)
     # print('The runtime Net Feed In inside:',runtime1)
-    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0
+    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list
 
 # print(round(NF(),3))
 

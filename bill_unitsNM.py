@@ -28,12 +28,16 @@ def bill_unitsNM(x1):
     # print(g_units_op['year0'])
     # ##Solar, battery and export units
     a_units_t = g_units_T[1]
+    s_units_t = a_units_t[0]
+    b_units_t = a_units_t[1]
+    e_units_t = a_units_t[2]
     list = [a_units_t[0], a_units_t[1], a_units_t[2]]
     a_units = (unit_w_sys25(list))
     s_units = a_units[0]
     b_units = a_units[1]
     e_units = a_units[2]
     units_25 = pd.DataFrame()
+    g_units_8760 = g_units_T[2]
     # print(e_units['year0'])
     for n in range(0,26):
         t_units = [0] * 12
@@ -67,7 +71,7 @@ def bill_unitsNM(x1):
             t_units[i] = (n_units[i] + p_units[i] + op_units[i])
         units_25['year' + str(n)] = [t_units, n_units, p_units, op_units, e_units_up, s_units, b_units]
     # print(units_25)
-    return units_25, e_units
+    return units_25, e_units, g_units_8760, s_units_t, b_units_t, e_units_t
 
 # print(bill_unitsNM())
 

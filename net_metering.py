@@ -33,9 +33,14 @@ def NM(x1):
     ##Bill units has value for Total, Normal, peak, offpeak, export and excess updated for each month
     bill_unit_25_T = (bill_unitsNM(x1))
     bill_unit_25 = (bill_unit_25_T[0])
-    print(sum(bill_unit_25['year0'][0]))
+    # print(sum(bill_unit_25['year0'][0]))
     e_unit_25 = (bill_unit_25_T[1])
+    g_units_8760 = bill_unit_25_T[2]
+    s_units_8760 = bill_unit_25_T[3]
+    b_units_8760 = bill_unit_25_T[4]
+    e_units_8760 = bill_unit_25_T[5]
     e_unit_yr0 = (e_unit_25)
+    # e_units = (e_unit_yr0['year0'])
     e_units_yr0 = sum(e_unit_yr0['year0'])
     g_units_yr0 = sum(bill_unit_25['year0'][0])
 
@@ -77,13 +82,13 @@ def NM(x1):
         temp = bill_amt_m
         # print(temp)
         bill_amt_25['year' + str(n)] = temp
-    # print(bill_amt_25)
+    # print(s_units_yr0)
     # end time
     # end1 = time.time()
     #
     # runtime1 = (end1 - start1)
     # print('The runtime Net Metering inside:', i, runtime1)
-    return bill_amt_25, s_units_yr0, e_units_yr0, g_units_yr0,b_units_yr0
+    return bill_amt_25, s_units_yr0, e_units_yr0, g_units_yr0,b_units_yr0, g_units_8760, s_units_8760, b_units_8760, e_units_8760
 
 # print(NM())
 

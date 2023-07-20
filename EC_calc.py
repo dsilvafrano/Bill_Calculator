@@ -51,23 +51,28 @@ def EC(list):
             # print(EC['energy_charge'])
             for i in range(1,(m_tier+1)):
                 if m_units_n >= (EC['maximum'][i-1] - EC['min'][i-1]):
+                    # print('in')
                     bill_amt_n = int(bill_amt_n + EC['bill_amt'][i-1])
                     m_units_n = m_units_n - (EC['maximum'][i-1] - EC['min'][i-1])
                 else:
                     bill_amt_n = int(bill_amt_n + (m_units_n * EC['energy_charge'][i - 1]))
-
+                    break
+                # print('bil amt:', bill_amt_n)
+                # print('units:',m_units_n)
                 if tou_select == 1 or tou_select == 2:  # 1 means applicable and 2 means optional
                     if m_units_p >= (EC_p['maximum'][i - 1] - EC_p['min'][i - 1]):
                         bill_amt_p = int(bill_amt_p + EC_p['bill_amt'][i - 1])
                         m_units_p = m_units_p - (EC_p['maximum'][i - 1] - EC_p['min'][i - 1])
                     else:
                         bill_amt_p = int(bill_amt_p + (m_units_p * EC['energy_charge'][i - 1]))
+                        break
 
                     if m_units_op >= (EC_op['maximum'][i - 1] - EC_op['min'][i - 1]):
                         bill_amt_op = int(bill_amt_op + EC_op['bill_amt'][i - 1])
                         m_units_op = m_units_op - (EC_op['maximum'][i - 1] - EC_op['min'][i - 1])
                     else:
                         bill_amt_op = int(bill_amt_op + (m_units_p * EC_op['energy_charge'][i - 1]))
+                        break
                         # print(bill_amt)
                 else:
                     bill_amt_p = 0
@@ -82,7 +87,7 @@ def EC(list):
         # print('The runtime EC charge selection:', runtime1)
         return bill_amt_EC
 
-# list  =[811, 811, 0, 0, 0]
+# list  =[103.042, 103.042, 0, 0, 0]
 # print(EC(list))
 # end time
 # end = time.time()

@@ -10,12 +10,12 @@ import numpy as np
 import numpy_financial as npf
 
 
-from Inputs import metering_type, load_input_type
-from Monthly import avg_in_month
-import Monthwise
+from Inputs import metering_type, load_input_type, solarpv_subsidy, solar, battery, bat_type
+from Monthly import avg_in_month_m, avg_user_load_n
+from Monthwise import avg_in_month, user_load_n
 from Bill_w_o_sys25 import bill_w_o_sys25
 from SQL import pysam_debt_fraction, cost_esc, loan_rate, loan_period,dis_factor, investmentcost_calculate,\
-    replacement_cost
+    replacement_cost, financial_fetch, tou_select
 from net_metering import NM
 from net_feed_in import NF
 from gross_metering import GM
@@ -26,11 +26,15 @@ nyr = 26
 
 def financial_calc(x1):
     if load_input_type == "average_monthly":
-        Yr1_units = avg_in_month
+        Yr1_units = avg_in_month_m
+        Yr1_units_8760 = avg_user_load_n
     else:
-        Yr1_units = Monthwise.avg_in_month
-
-    # print('Yr 1 load:',sum(Yr1_units))
+        Yr1_units = avg_in_month
+        Yr1_units_8760 = user_load_n
+    #Converting in to 24 X 365 format
+    Yr1_units_24x365_n = np.array(Yr1_units_8760)
+    Yr1_units_24x365 = Yr1_units_24x365_n.reshape((365,24))
+    # print('Montly load:',len(Yr1_units_24x365))
     # # amount invested calculation
     sol_cap = x1[0]
     bat_cap = x1[1]
@@ -40,6 +44,31 @@ def financial_calc(x1):
     loan_principal_amount = amount_invested * pysam_debt_fraction / 100
     eq_amount = amount_invested * (1 - (pysam_debt_fraction / 100))
 
+    #Collecting Investment cost split up
+    financial_costs = financial_fetch(sol_cap)
+    solar_pv_cost = 0
+    inverter_cost = 0
+    battery_cost = 0
+    subsidy_cost = 0
+    if solar & battery:
+        if bat_type == 1:
+            solar_pv_cost = financial_costs[5]
+            inverter_cost = financial_costs[4]
+            battery_cost = financial_costs[6]
+            subsidy_cost = solarpv_subsidy
+        else:
+            solar_pv_cost = financial_costs[5]
+            inverter_cost = financial_costs[4]
+            battery_cost = financial_costs[7]
+            subsidy_cost = solarpv_subsidy
+    else:
+        solar_pv_cost = financial_costs[2]
+        subsidy_cost = solarpv_subsidy
+
+    # print('Solar cost:', (solar_pv_cost))
+    # print('Inverter cost:', (inverter_cost))
+    # print('Battery cost:', (battery_cost))
+    # print('Subsidy cost:', (subsidy_cost))
     # average monthly/yearly cash flow
     # for base year
     cCF_t = np.zeros(nyr)
@@ -59,17 +88,38 @@ def financial_calc(x1):
     # start2 = time.time()
 
     Elec_bill_withoutDER_t = bill_w_o_sys25()
+    # print('Bill without sys:',Elec_bill_withoutDER_t)
     Elec_bill_withoutDER[0] = sum(Elec_bill_withoutDER_t['year0'])
 
     if metering_type == "Net Metering":
         Elec_bill_withDER_T = NM(x1)
         Elec_bill_withDER_t = Elec_bill_withDER_T[0]
-        g_unit_yr1 = Elec_bill_withDER_T[3]
+        g_unit_yr1 = sum(Elec_bill_withDER_T[5])
         s_unit_yr1 = Elec_bill_withDER_T[1]
         b_unit_yr1 = Elec_bill_withDER_T[4]
         e_unit_yr1 = Elec_bill_withDER_T[2]
         avg_annual_solar = (s_unit_yr1)/365
         # print('Solar:', s_unit_yr1)
+        g_unit_yr1_8760 = (Elec_bill_withDER_T[5])
+        # Converting in to 24 X 365 format
+        Yr1_g_units_24x365_n = np.array(g_unit_yr1_8760)
+        Yr1_g_units_24x365 = Yr1_g_units_24x365_n.reshape((365, 24))
+        s_unit_yr1_8760 = (Elec_bill_withDER_T[6]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_s_units_24x365_n = np.array(s_unit_yr1_8760)
+        Yr1_s_units_24x365 = Yr1_s_units_24x365_n.reshape((365, 24))
+        b_unit_yr1_8760 = (Elec_bill_withDER_T[7]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_b_units_24x365_n = np.array(b_unit_yr1_8760)
+        Yr1_b_units_24x365 = Yr1_b_units_24x365_n.reshape((365, 24))
+        e_unit_yr1_8760 = (Elec_bill_withDER_T[8]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_e_units_24x365_n = np.array(e_unit_yr1_8760)
+        Yr1_e_units_24x365 = Yr1_e_units_24x365_n.reshape((365, 24))
+        print('Grid:', sum(g_unit_yr1_8760))
+        print('Solar:', sum(s_unit_yr1_8760))
+        print('Battery:', sum(b_unit_yr1_8760))
+        print('export:', sum(e_unit_yr1_8760))
     elif metering_type == "Net Feed In":
         Elec_bill_withDER_T = NF(x1)
         Elec_bill_withDER_t = Elec_bill_withDER_T[0]
@@ -78,7 +128,27 @@ def financial_calc(x1):
         b_unit_yr1 = Elec_bill_withDER_T[4]
         e_unit_yr1 = Elec_bill_withDER_T[2]
         avg_annual_solar = (s_unit_yr1)/365
+        g_unit_yr1_8760  = (Elec_bill_withDER_T[5])
+        # Converting in to 24 X 365 format
+        Yr1_g_units_24x365_n = np.array(g_unit_yr1_8760)
+        Yr1_g_units_24x365 = Yr1_g_units_24x365_n.reshape((365, 24))
+        s_unit_yr1_8760 = (Elec_bill_withDER_T[6][0]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_s_units_24x365_n = np.array(s_unit_yr1_8760)
+        Yr1_s_units_24x365 = Yr1_s_units_24x365_n.reshape((365, 24))
+        b_unit_yr1_8760 = (Elec_bill_withDER_T[6][1]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_b_units_24x365_n = np.array(b_unit_yr1_8760)
+        Yr1_b_units_24x365 = Yr1_b_units_24x365_n.reshape((365, 24))
+        e_unit_yr1_8760 = (Elec_bill_withDER_T[6][2]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_e_units_24x365_n = np.array(e_unit_yr1_8760)
+        Yr1_e_units_24x365 = Yr1_e_units_24x365_n.reshape((365, 24))
         # print('Solar:', (g_unit_yr1))
+        print('Grid:', sum(g_unit_yr1_8760))
+        print('Solar:', sum(s_unit_yr1_8760))
+        print('Battery:', sum(b_unit_yr1_8760))
+        print('export:', sum(e_unit_yr1_8760))
     else:
         Elec_bill_withDER_T = GM(x1)
         Elec_bill_withDER_t = Elec_bill_withDER_T[0]
@@ -87,7 +157,28 @@ def financial_calc(x1):
         b_unit_yr1 = Elec_bill_withDER_T[4]
         e_unit_yr1 = Elec_bill_withDER_T[2]
         avg_annual_solar = (s_unit_yr1) / 365
+        g_unit_yr1_8760 = (Elec_bill_withDER_T[5])
+        # Converting in to 24 X 365 format
+        Yr1_g_units_24x365_n = np.array(g_unit_yr1_8760)
+        Yr1_g_units_24x365 = Yr1_g_units_24x365_n.reshape((365, 24))
+        s_unit_yr1_8760 = (Elec_bill_withDER_T[6][0]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_s_units_24x365_n = np.array(s_unit_yr1_8760)
+        Yr1_s_units_24x365 = Yr1_s_units_24x365_n.reshape((365, 24))
+        b_unit_yr1_8760 = (Elec_bill_withDER_T[6][1]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_b_units_24x365_n = np.array(b_unit_yr1_8760)
+        Yr1_b_units_24x365 = Yr1_b_units_24x365_n.reshape((365, 24))
+        e_unit_yr1_8760 = (Elec_bill_withDER_T[6][2]['year0'])
+        # Converting in to 24 X 365 format
+        Yr1_e_units_24x365_n = np.array(e_unit_yr1_8760)
+        Yr1_e_units_24x365 = Yr1_e_units_24x365_n.reshape((365, 24))
         # print('Solar:', (g_unit_yr1))
+        print('Grid:', sum(g_unit_yr1_8760))
+        print('Solar:', sum(s_unit_yr1_8760))
+        print('Battery:', sum(b_unit_yr1_8760))
+        print('export:', sum(e_unit_yr1_8760))
+
 
     # Year 0 is considered as BAU
     Elec_bill_withDER[0] = 0
@@ -120,7 +211,10 @@ def financial_calc(x1):
         # end1 = time.time()
         # runtime1 = (end1 - start1)
         # print('The runtime for savings calculation is:',runtime1)
-        total_op_cost[i] = (500 * sol_cap + 500 * bat_cap) * (1 + (i * cost_esc))
+        if solar & battery:
+            total_op_cost[i] = (500 * sol_cap + 500 * bat_cap) * (1 + (i * cost_esc))
+        else:
+            total_op_cost[i] = (500 * sol_cap ) * (1 + (i * cost_esc))
         # print('Total op cost year 2:', total_op_cost[2])
         # # # starting time
         # start1 = time.time()
@@ -130,6 +224,8 @@ def financial_calc(x1):
         # runtime1 = (end1 - start1)
         # print('The runtime for savings is:', runtime1)
         # print('Total saving:', total_savings)
+        # print('inv:',rep_invertercost)
+        # print('bat:',rep_batterycost)
 
         if i in range(2,12):
             total_debt_yearly[i] = 12 * emi
@@ -173,7 +269,7 @@ def financial_calc(x1):
     cum_cashflow = cum_cashflow + CF[0]
     # print('cumcashflow:', cum_cashflow)
 
-    average_annualcashflow = cum_cashflow / nyr
+    average_annualcashflow = cum_cashflow / 25
     average_monthlycashflow = average_annualcashflow / 12
     # print('average_monthlycashflow:', average_monthlycashflow)
 
@@ -183,7 +279,7 @@ def financial_calc(x1):
     # Contribution of solar, grid & battery
 
     sum_load = sum(Yr1_units)
-    print('sum of load', sum(Yr1_units))
+    # print('sum of load', sum(Yr1_units))
     # sum_grid = sum(g_unit_yr1)
     # sum_solar = sum(s_unit_yr1)
     # sum_batt = sum(b_unit_yr1)
@@ -205,7 +301,7 @@ def financial_calc(x1):
     # solar_contri = s_unit_yr1
     # batt_contri = b_unit_yr1
     # export_contri = e_unit_yr1
-
+    # print((s_unit_yr1 - b_unit_yr1 - e_unit_yr1))
 
     # Emission factor CO2 yr 1
     Av_emission_CO2 = ((s_unit_yr1) * 0.793)/1000 # Emission factor for coal
@@ -221,7 +317,9 @@ def financial_calc(x1):
 
     return npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, \
            amount_invested, average_annualcashflow,avg_annual_solar,grid_contri,solar_contri,batt_contri,export_contri,\
-           Av_emission_CO2, Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area
+           Av_emission_CO2, Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area, solar_pv_cost, \
+           inverter_cost, battery_cost, subsidy_cost, tou_select, Yr1_units_24x365, Yr1_g_units_24x365, \
+           Yr1_s_units_24x365, Yr1_b_units_24x365, Yr1_e_units_24x365
 
 # print('The NPV is :',financial_calc([10,1]))
 # profiler = LineProfiler()

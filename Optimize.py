@@ -23,14 +23,14 @@ sl = 50
 
 #Optuna
 def objective(trial):
-    x = trial.suggest_float("x", 1, 10,)
+    x = trial.suggest_float("x", 1, 5,)
     y = trial.suggest_float("y", 0, 10,)
     x1 = [x,y]
     return (financial_calc(x1)[7])
 #optuna optimiser
 # sampler = {"x": [40.5, 45.5, 49.5], "y": [5.5, 10.5, 15.5]}
-sampler = optuna.samplers.CmaEsSampler()
-# sampler = optuna.samplers.GridSampler({'x': [20, 42.5, 45, 47.5, 50], 'y': [2.5, 5, 7.5, 15, 25]})
+# sampler = optuna.samplers.CmaEsSampler()
+sampler = optuna.samplers.GridSampler({'x': [1, 2, 3, 4, 5], 'y': [1, 1.5, 2, 2.5, 3]})
 # sampler = optuna.samplers.GridSampler({'x': [40, 45, 49.5], 'y': [0.5, 7.5, 12.5]})
 study = optuna.create_study(sampler=sampler)
 study.optimize(objective,n_trials=50,catch=(TypeError,IndexError,))
@@ -73,30 +73,45 @@ x1 = [x,y]
 
 npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested\
         ,  average_annualcashflow,s_unit_yr1,grid_contri,solar_contri,batt_contri,export_contri, Av_emission_CO2, \
-        Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area = financial_calc(x1)
+        Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area, solar_pv_cost, inverter_cost, battery_cost, \
+        subsidy_cost,tou_select, Yr1_units_24x365, Yr1_g_units_24x365, Yr1_s_units_24x365, Yr1_b_units_24x365, \
+        Yr1_e_units_24x365  = financial_calc(x1)
 # Result = np.fromiter((financial_calc(x1)),dtype='float')
 #printing the results
+print('Solar PV capacity(kW):', x1[0])
+print('Battery energy capacity(kWh):', x1[1])
 print('NPV = ' + str(npv))
 print('payback year = ' + str(payback_year))
 print('25 yr savings = ' + str(cum_cashflow))
 print('return on investment = ' + str(roi))
-print('% of savings in 25 yrs = ' + str((cum_cashflow / sum(Elec_bill_withoutDER)) * 100))
+print('% of savings in 25 yrs = ' + str((cum_cashflow/sum(Elec_bill_withoutDER))*100))
 print('Grid contribution = ' + str(grid_contri))
 print('Solar contribution = ' + str(solar_contri))
 print('Batt contribution = ' + str(batt_contri))
 print('Export contribution = ' + str(export_contri))
-print('NPV(BAU) to dis.Savings = ' + str(100 - NPV_to_Savings))
+print('NPV(BAU) to dis.Savings = ' + str(100-NPV_to_Savings))
 print('Shade free area(m2) = ' + str(shade_free_area))
 print('Avg. annual Savings = ' + str(average_annualcashflow))
 print('Avg. solar gen for yr 1 = ' + str(s_unit_yr1))
 print('Av_emission_CO2 for yr 1 = ' + str(Av_emission_CO2))
 print('Load for yr 1 = ' + str(sum(Yr1_units)))
-print('Electric bill w/o sys =' + str(sum(Elec_bill_withoutDER)))
-print('Electric bill w sys =' + str(sum(Elec_bill_withDER)))
+print('Electric bill w/o sys =' + str((Elec_bill_withoutDER)))
+print('Electric bill w sys =' + str((Elec_bill_withDER)))
+print('Solar cost:', str(solar_pv_cost))
+print('Inverter cost:', str(inverter_cost))
+print('Battery cost:', str(battery_cost))
+print('Subsidy cost:', str(subsidy_cost))
+print('TOU Applicability:', str(tou_select))
+print('24x365 matrix: Load', Yr1_units_24x365)
+print('24x365 matrix: To load from Grid', Yr1_g_units_24x365)
+print('24x365 matrix: To load from Solar', Yr1_s_units_24x365)
+print('24x365 matrix: To load from Battery', Yr1_b_units_24x365)
+print('24x365 matrix: To grid from System ', Yr1_e_units_24x365)
 a1 = [x1[0], x1[1], npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested\
         ,  average_annualcashflow,s_unit_yr1,grid_contri,solar_contri,batt_contri,export_contri, Av_emission_CO2, \
-        Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area]
-print('The result is:', a1)
+        sum(Yr1_units), sum(Elec_bill_withoutDER),sum(Elec_bill_withDER),shade_free_area, solar_pv_cost, inverter_cost, battery_cost, \
+        subsidy_cost,tou_select ]
+# print('The result is:', a1)
 
 # obj = []
 # # zaxis = []

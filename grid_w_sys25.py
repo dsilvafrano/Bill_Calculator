@@ -24,6 +24,7 @@ def grid_w_sys25(x1):
     g_units = pd.DataFrame()
     g_units_T = esc25(x1)
     g_units = g_units_T[1]
+    g_units_8760 = g_units['year0']
     a_units = [g_units_T[2], g_units_T[3], g_units_T[4]]
     g_units_t = pd.DataFrame()
     g_units_t.insert(0, 'TS', TS)
@@ -61,7 +62,7 @@ def grid_w_sys25(x1):
 
     # print(g_units_d['year25'][3])
 
-    return g_units_d, a_units
+    return g_units_d, a_units, g_units_8760
 
 # print((grid_w_sys25()))
 

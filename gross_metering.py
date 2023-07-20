@@ -33,6 +33,7 @@ def GM(x1):
     g_units_T = (grid_w_sys25(x1))
     g_units_t = g_units_T[0]
     g_units_yr0 = sum((g_units_t)['year0'][0])
+    g_units_8760 = g_units_T[2]
     # print((g_units[0][0]))
     ##Solar, battery and export units
     a_units_t = g_units_T[1]
@@ -74,7 +75,7 @@ def GM(x1):
         # print(bill_amt_m)
         bill_amt_25['year' + str(n)] = temp
     # print(bill_amt_25)
-    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0
+    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list
 
 # print(GM())
 
