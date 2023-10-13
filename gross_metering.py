@@ -22,6 +22,7 @@ from EC_calc import EC
 
 # Function to do the bill calculation
 def GM(x1):
+    EC_avg25 = pd.DataFrame()
     bill_amt_25 = pd.DataFrame()
     #Network charge and compensation rate
     NC = network_charge_fetch(x1[0])[0]
@@ -58,12 +59,16 @@ def GM(x1):
         bill_amt = 0
         temp = []
         bill_amt_m = []
+        EC_avg =[]
 
     # #Calculation of bill for 12 months of a year
         for i in range(0,12):
             list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n]
         #     # Variable for 25 year analysis
-            EC_t = EC(list_m)
+        #     EC_t = EC(list_m)
+            EC_T = EC(list_m)
+            EC_t = EC_T[0]
+            ec_avg = EC_T[1]
         # #Calculate the network charge applicable
             NC_t = NC * s_units[i]
             #Revenue from export to grid
@@ -71,11 +76,14 @@ def GM(x1):
             #Bill calculation for Gross metering
             bill_amt = FC + ((EC_t - CR_t) + NC_t)
             bill_amt_m.append(bill_amt)
+            EC_avg.append((ec_avg))
         temp = bill_amt_m
+        temp2 = EC_avg
         # print(bill_amt_m)
         bill_amt_25['year' + str(n)] = temp
+        EC_avg25['year' + str(n)] = temp2
     # print(bill_amt_25)
-    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list
+    return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list, EC_avg25
 
 # print(GM())
 

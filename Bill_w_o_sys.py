@@ -33,7 +33,9 @@ def bill_w_o_sys(n):
 
     # m_units = 1000
     t_bill = []
+    EC_avg =[]
     Total = 0
+    ec_avg = 0
     # fixed_charge_m = fixed_charge_m
     # print(fixed_charge_m)
     for j in range (0,12):
@@ -49,15 +51,19 @@ def bill_w_o_sys(n):
         #     # Variable for 25 year analysis
         FC = fixed_charge_m * (1 + (n * cost_esc))
         # print(FC)
-        EC_t = EC(list_m)
+        EC_T = EC(list_m)
+        EC_t = EC_T[0]
+        ec_avg = EC_T[1]
         # print(EC_t)
 
 
         Total: int = FC + EC_t
+        # print('BAU bill:', n, j, EC_t)
         t_bill.append(Total)
+        EC_avg.append((ec_avg))
         # print(t_bill)
 
-    return t_bill
+    return t_bill, EC_avg
 
 # print(bill_w_o_sys(0))
 

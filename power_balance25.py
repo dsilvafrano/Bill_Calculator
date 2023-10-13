@@ -23,7 +23,7 @@ der_deg = der_deg
 # print(der_deg)
 batstatus = batstatus
 metering_type = metering_type
-solarp = api(latitude,longitude)
+solarp = api()
 # Converting (Wac) to (kWac)
 solarp['AC(kW)'] = solarp['AC(kW)']/1000
 

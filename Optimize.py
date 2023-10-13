@@ -18,21 +18,21 @@ import optuna
 from openpyxl import *
 
 # Build an array of sample points
-sl = 50
+sl = 10
 
 
 #Optuna
 def objective(trial):
-    x = trial.suggest_float("x", 1, 5,)
-    y = trial.suggest_float("y", 0, 10,)
+    x = trial.suggest_float("x", 1, 80,)
+    y = trial.suggest_float("y", 0, 0,)
     x1 = [x,y]
     return (financial_calc(x1)[7])
 #optuna optimiser
 # sampler = {"x": [40.5, 45.5, 49.5], "y": [5.5, 10.5, 15.5]}
 # sampler = optuna.samplers.CmaEsSampler()
-sampler = optuna.samplers.GridSampler({'x': [1, 2, 3, 4, 5], 'y': [1, 1.5, 2, 2.5, 3]})
+# sampler = optuna.samplers.GridSampler({'x': [1, 2, 3, 4, 5], 'y': [1, 1.5, 2, 2.5, 3]})
 # sampler = optuna.samplers.GridSampler({'x': [40, 45, 49.5], 'y': [0.5, 7.5, 12.5]})
-study = optuna.create_study(sampler=sampler)
+study = optuna.create_study()
 study.optimize(objective,n_trials=50,catch=(TypeError,IndexError,))
 # study.optimize(objective,catch=(TypeError,IndexError,))
 # trials = study.get_trials()

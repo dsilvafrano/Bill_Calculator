@@ -15,7 +15,7 @@ from Monthly import avg_in_month_m, avg_user_load_n
 from Monthwise import avg_in_month, user_load_n
 from Bill_w_o_sys25 import bill_w_o_sys25
 from SQL import pysam_debt_fraction, cost_esc, loan_rate, loan_period,dis_factor, investmentcost_calculate,\
-    replacement_cost, financial_fetch, tou_select
+    replacement_cost, financial_fetch, tou_select, network_charge_fetch
 from net_metering import NM
 from net_feed_in import NF
 from gross_metering import GM
@@ -27,6 +27,7 @@ nyr = 26
 def financial_calc(x1):
     if load_input_type == "average_monthly":
         Yr1_units = avg_in_month_m
+        # print('Monthly', Yr1_units)
         Yr1_units_8760 = avg_user_load_n
     else:
         Yr1_units = avg_in_month
@@ -38,6 +39,8 @@ def financial_calc(x1):
     # # amount invested calculation
     sol_cap = x1[0]
     bat_cap = x1[1]
+    compensation_rate_t = network_charge_fetch(sol_cap)
+    compensation_rate = compensation_rate_t[1]
     amount_invested = investmentcost_calculate(sol_cap, bat_cap)
     # print('The total installation cost is:', amount_invested)
     rep_batterycost, rep_invertercost = replacement_cost(sol_cap, bat_cap)
@@ -73,11 +76,13 @@ def financial_calc(x1):
     # for base year
     cCF_t = np.zeros(nyr)
     CF = np.zeros(nyr)
+    EC_avg_wo_DER = pd.DataFrame()
     Elec_bill_withoutDER_t = pd.DataFrame()
     Elec_bill_withDER_t = pd.DataFrame()
     Elec_bill_withoutDER = np.zeros(nyr)
     # fc_yearly_charge = np.zeros(nyr)
     Elec_bill_withDER = np.zeros(nyr)
+    EC_avg_with_DER = pd.DataFrame()
     total_savings = np.zeros(nyr)
     total_op_cost = np.zeros(nyr)
     total_cost = np.zeros(nyr)
@@ -86,10 +91,12 @@ def financial_calc(x1):
 
     # starting time
     # start2 = time.time()
-
-    Elec_bill_withoutDER_t = bill_w_o_sys25()
+    Elec_bill_withoutDER_q = bill_w_o_sys25()
+    Elec_bill_withoutDER_t = Elec_bill_withoutDER_q[0]
     # print('Bill without sys:',Elec_bill_withoutDER_t)
     Elec_bill_withoutDER[0] = sum(Elec_bill_withoutDER_t['year0'])
+    EC_avg_wo_DER = Elec_bill_withoutDER_q[1]['year0'][0]
+
 
     if metering_type == "Net Metering":
         Elec_bill_withDER_T = NM(x1)
@@ -116,10 +123,11 @@ def financial_calc(x1):
         # Converting in to 24 X 365 format
         Yr1_e_units_24x365_n = np.array(e_unit_yr1_8760)
         Yr1_e_units_24x365 = Yr1_e_units_24x365_n.reshape((365, 24))
-        print('Grid:', sum(g_unit_yr1_8760))
-        print('Solar:', sum(s_unit_yr1_8760))
-        print('Battery:', sum(b_unit_yr1_8760))
-        print('export:', sum(e_unit_yr1_8760))
+        EC_avg_with_DER = Elec_bill_withDER_T[9]['year0'][0]
+        # print('Grid:', sum(g_unit_yr1_8760))
+        # print('Solar:', sum(s_unit_yr1_8760))
+        # print('Battery:', sum(b_unit_yr1_8760))
+        # print('export:', sum(e_unit_yr1_8760))
     elif metering_type == "Net Feed In":
         Elec_bill_withDER_T = NF(x1)
         Elec_bill_withDER_t = Elec_bill_withDER_T[0]
@@ -144,11 +152,12 @@ def financial_calc(x1):
         # Converting in to 24 X 365 format
         Yr1_e_units_24x365_n = np.array(e_unit_yr1_8760)
         Yr1_e_units_24x365 = Yr1_e_units_24x365_n.reshape((365, 24))
+        EC_avg_with_DER = Elec_bill_withDER_T[7]['year0'][0]
         # print('Solar:', (g_unit_yr1))
-        print('Grid:', sum(g_unit_yr1_8760))
-        print('Solar:', sum(s_unit_yr1_8760))
-        print('Battery:', sum(b_unit_yr1_8760))
-        print('export:', sum(e_unit_yr1_8760))
+        # print('Grid:', sum(g_unit_yr1_8760))
+        # print('Solar:', sum(s_unit_yr1_8760))
+        # print('Battery:', sum(b_unit_yr1_8760))
+        # print('export:', sum(e_unit_yr1_8760))
     else:
         Elec_bill_withDER_T = GM(x1)
         Elec_bill_withDER_t = Elec_bill_withDER_T[0]
@@ -173,11 +182,12 @@ def financial_calc(x1):
         # Converting in to 24 X 365 format
         Yr1_e_units_24x365_n = np.array(e_unit_yr1_8760)
         Yr1_e_units_24x365 = Yr1_e_units_24x365_n.reshape((365, 24))
+        EC_avg_with_DER = Elec_bill_withDER_T[7]['year0'][0]
         # print('Solar:', (g_unit_yr1))
-        print('Grid:', sum(g_unit_yr1_8760))
-        print('Solar:', sum(s_unit_yr1_8760))
-        print('Battery:', sum(b_unit_yr1_8760))
-        print('export:', sum(e_unit_yr1_8760))
+        # print('Grid:', sum(g_unit_yr1_8760))
+        # print('Solar:', sum(s_unit_yr1_8760))
+        # print('Battery:', sum(b_unit_yr1_8760))
+        # print('export:', sum(e_unit_yr1_8760))
 
 
     # Year 0 is considered as BAU
@@ -247,7 +257,7 @@ def financial_calc(x1):
         cCF_t[i] = cCF
 
         cum_cashflow = cum_cashflow + CF[i]
-    # print('The cumulative CF is:', (cCF_t))
+    print('The cumulative CF is:', (cCF_t))
     # end3 = time.time()
     # runtime3 = (end3 - start3)
     # print('The runtime for financial bill w sys is:', runtime3)
@@ -319,7 +329,7 @@ def financial_calc(x1):
            amount_invested, average_annualcashflow,avg_annual_solar,grid_contri,solar_contri,batt_contri,export_contri,\
            Av_emission_CO2, Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area, solar_pv_cost, \
            inverter_cost, battery_cost, subsidy_cost, tou_select, Yr1_units_24x365, Yr1_g_units_24x365, \
-           Yr1_s_units_24x365, Yr1_b_units_24x365, Yr1_e_units_24x365
+           Yr1_s_units_24x365, Yr1_b_units_24x365, Yr1_e_units_24x365, compensation_rate,EC_avg_wo_DER,EC_avg_with_DER
 
 # print('The NPV is :',financial_calc([10,1]))
 # profiler = LineProfiler()

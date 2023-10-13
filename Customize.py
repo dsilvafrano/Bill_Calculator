@@ -5,21 +5,21 @@ start = time.time()
 import numpy as np
 import pandas as pd
 from financial_calc import financial_calc
-from Inputs import solar, battery, sload
+from Inputs import solar, battery, sload, x1
 
 # Customise run inputs and results display
 a =np.zeros(2, dtype=float).round(3)
-a[0] = 1  # user input solar capacity
+a[0] = x1[0] #15 # user input solar capacity
 # # a[0]= 26.126338006179388 # user input solar capacity
 if solar & battery:
-    a[1]= 1 # user input storage capacity
+    a[1]= x1[1]#1 # user input storage capacity
 else:
-    a[1] = 2  # user input storage capacity
+    a[1] = 0  # user input storage capacity
 npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested\
     ,  average_annualcashflow,s_unit_yr1,grid_contri,solar_contri,batt_contri,export_contri, Av_emission_CO2, \
     Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area, solar_pv_cost, inverter_cost, battery_cost, \
     subsidy_cost,tou_select, Yr1_units_24x365, Yr1_g_units_24x365, Yr1_s_units_24x365, Yr1_b_units_24x365, \
-    Yr1_e_units_24x365 =financial_calc(a)
+    Yr1_e_units_24x365,compensation_rate,EC_avg_wo_DER,EC_avg_with_DER =financial_calc(a)
 
 # end = time.time()
 # # total time taken
@@ -49,7 +49,11 @@ print('Solar cost:', str(solar_pv_cost))
 print('Inverter cost:', str(inverter_cost))
 print('Battery cost:', str(battery_cost))
 print('Subsidy cost:', str(subsidy_cost))
+print('Amount invested:', str(amount_invested))
 print('TOU Applicability:', str(tou_select))
+print('Compensation rate (INR/kWh):',compensation_rate)
+print('Average tariff - BAU case (INR/kWh):',EC_avg_wo_DER)
+print('Average tariff - DER case (INR/kWh):', EC_avg_with_DER)
 print('24x365 matrix: Load', Yr1_units_24x365)
 print('24x365 matrix: To load from Grid', Yr1_g_units_24x365)
 print('24x365 matrix: To load from Solar', Yr1_s_units_24x365)

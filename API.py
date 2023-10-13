@@ -3,15 +3,15 @@
 ##Packages
 import pandas as pd
 import requests
-
+import Inputs
 #
 # # starting time
 # start = time.time()
-def api(lat,long):
+def api():
     ##Location details
     #Fetch solar data using latitude and longitude (get the latitude and longitude using the pincode data)
-    latitude = lat
-    longitude = long
+    latitude = Inputs.latitude
+    longitude = Inputs.longitude
     print('Latitude:', latitude)
     print('Longitude:', longitude)
     #API call for a premium 1kW PV panel having 19 percent efficiency, fixed roof mounted type at tilt angle 12 degrees

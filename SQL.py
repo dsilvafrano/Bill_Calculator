@@ -17,7 +17,7 @@ random_no = 0.3555
 def create_connection():
     conn = None
     try:
-        conn = sqlite3.connect("db21_updated_bill.sqlite3")
+        conn = sqlite3.connect("db23_updated.sqlite3")
     except ValueError as e:
         logger.debug(random_no + " " + e)
     return conn
@@ -86,10 +86,10 @@ dis_factor_q = pd.read_sql_query("select value from assumptions_cashloan where p
 dis_factor = dis_factor_q.values[0] / 100
 # print('Discount rate :', dis_factor)
 
-# cost escalation/inflation rate
-cost_esc_q = pd.read_sql_query("select value from assumptions_cashloan where parameter = 'inflation_rate'", conn)
-cost_esc = float(cost_esc_q.values[0] / 100)
-# print('Cost escalation :', cost_esc)
+# # cost escalation/inflation rate
+# cost_esc_q = pd.read_sql_query("select value from assumptions_cashloan where parameter = 'inflation_rate'", conn)
+# cost_esc = float(cost_esc_q.values[0] / 100)
+# # print('Cost escalation :', cost_esc)
 
 # load escalation
 load_esc_q = pd.read_sql_query("select value from assumptions_grid where parameter = 'load_escalation'", conn)
