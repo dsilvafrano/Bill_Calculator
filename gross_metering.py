@@ -68,7 +68,7 @@ def GM(x1):
         #     EC_t = EC(list_m)
             EC_T = EC(list_m)
             EC_t = EC_T[0]
-            ec_avg = EC_T[1]
+            # ec_avg = EC_T[1]
         # #Calculate the network charge applicable
             NC_t = NC * s_units[i]
             #Revenue from export to grid
@@ -76,7 +76,7 @@ def GM(x1):
             #Bill calculation for Gross metering
             bill_amt = FC + ((EC_t - CR_t) + NC_t)
             bill_amt_m.append(bill_amt)
-            EC_avg.append((ec_avg))
+            EC_avg.append((EC_t))
         temp = bill_amt_m
         temp2 = EC_avg
         # print(bill_amt_m)

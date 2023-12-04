@@ -6,6 +6,10 @@ import numpy as np
 import pandas as pd
 from financial_calc import financial_calc
 from Inputs import solar, battery, sload, x1
+import matplotlib
+from matplotlib import pyplot as plt
+# from pyplot import plot
+from mpl_toolkits.mplot3d import Axes3D
 
 # Customise run inputs and results display
 a =np.zeros(2, dtype=float).round(3)
@@ -18,8 +22,8 @@ else:
 npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, amount_invested\
     ,  average_annualcashflow,s_unit_yr1,grid_contri,solar_contri,batt_contri,export_contri, Av_emission_CO2, \
     Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area, solar_pv_cost, inverter_cost, battery_cost, \
-    subsidy_cost,tou_select, Yr1_units_24x365, Yr1_g_units_24x365, Yr1_s_units_24x365, Yr1_b_units_24x365, \
-    Yr1_e_units_24x365,compensation_rate,EC_avg_wo_DER,EC_avg_with_DER =financial_calc(a)
+    subsidy_cost,tou_select, Yr1_units_24x365_n, Yr1_g_units_24x365, Yr1_s_units_24x365, Yr1_b_units_24x365, \
+    Yr1_e_units_24x365,compensation_rate,W_avg_EC_BAU,W_avg_EC_DER =financial_calc(a)
 
 # end = time.time()
 # # total time taken
@@ -52,18 +56,38 @@ print('Subsidy cost:', str(subsidy_cost))
 print('Amount invested:', str(amount_invested))
 print('TOU Applicability:', str(tou_select))
 print('Compensation rate (INR/kWh):',compensation_rate)
-print('Average tariff - BAU case (INR/kWh):',EC_avg_wo_DER)
-print('Average tariff - DER case (INR/kWh):', EC_avg_with_DER)
-print('24x365 matrix: Load', Yr1_units_24x365)
-print('24x365 matrix: To load from Grid', Yr1_g_units_24x365)
-print('24x365 matrix: To load from Solar', Yr1_s_units_24x365)
-print('24x365 matrix: To load from Battery', Yr1_b_units_24x365)
-print('24x365 matrix: To grid from System ', Yr1_e_units_24x365)
+print('Average tariff - BAU case (INR/kWh):',W_avg_EC_BAU)
+print('Average tariff - DER case (INR/kWh):', W_avg_EC_DER)
+print('24x365 matrix: Load', sum(Yr1_units_24x365_n))
+print('24x365 matrix: To load from Grid', Yr1_g_units_24x365[0])
+print('24x365 matrix: To load from Solar', Yr1_s_units_24x365[0])
+print('24x365 matrix: To load from Battery', Yr1_b_units_24x365[0])
+print('24x365 matrix: To grid from System ', Yr1_e_units_24x365[0])
 a1 = [a[0], a[1], npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings,
       amount_invested,average_annualcashflow,s_unit_yr1, Av_emission_CO2, sum(Yr1_units), (Elec_bill_withoutDER),(Elec_bill_withDER)]
 # print(a1)
 
-
+#Creating graph for load
+#
+# fig = plt.figure(figsize=(10,5))
+#
+#
+# x = Yr1_units_24x365_n
+# print('L', x)
+# xpoints = np.array(x)
+# print('x',xpoints[0:24])
+# # ypoints = np.array([1,8760])
+# # print('y',ypoints)
+# plt.plot(xpoints[48:72])
+# # Set intervals and show values on the x-axis
+# plt.xticks(np.arange(0, 24, step=1))  # Set x-axis tick positions at intervals of 2
+# plt.xlabel('Time(hrs)')
+#
+# # Set intervals and show values on the y-axis
+# plt.yticks(np.arange(0, 0.7, step=0.1))  # Set y-axis tick positions at intervals of 0.5
+# plt.ylabel('Load(kWh)')
+# # plt.fill_between(xpoints)
+# plt.show()
 # end time
 end = time.time()
 

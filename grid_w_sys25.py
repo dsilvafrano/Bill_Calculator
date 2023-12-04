@@ -9,13 +9,14 @@ import time
 import pandas as pd
 import numpy as np
 from Inputs import wk,ts
-from TOU import tou_matrix
+from TOU import tou
 from power_balance25 import esc25
 
 # print('Entering grid units with system')
 
 # TOU matrix
-TOU = tou_matrix
+TOU_n = tou()
+TOU = TOU_n[0]
 # Retrieving dataframe with time stamp and days
 days = wk
 TS = ts

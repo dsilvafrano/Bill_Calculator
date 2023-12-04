@@ -52,7 +52,7 @@ def esc25(x1):
     df_l['year0'] = round(df_a[0]['load'],3)
     df_s['year0'] = round(df_a[0]['solar'],3)
     df_b['year0'] = round(df_a[0]['battery'],3)
-    df_b['year0'] = np.where((df_b['year0'] < 0), 0, df_b['year0']).round(3)
+    # df_b['year0'] = np.where((df_b['year0'] < 0), 0, df_b['year0']).round(3)
     df_g['year0'] = round(df_a[0]['grid'],3)
     df_g_t['year0'] = df_g['year0']
     df_e['year0'] = round(df_a[0]['excess'],3)
@@ -87,7 +87,7 @@ def esc25(x1):
             # Battery power for year i
             df_b['year' + str(i)] = SOC(df_ch['year' + str(i)], x1).round(3)
             # Removing all negative values to find sum of battery contribution
-            df_b['year' + str(i)] = np.where((df_b['year' + str(i)] < 0), 0, df_b['year' + str(i)]).round(3)
+            # df_b['year' + str(i)] = np.where((df_b['year' + str(i)] < 0), 0, df_b['year' + str(i)]).round(3)
             if metering_type == "Gross Metering":
                 df_g['year' + str(i)] = round(df_l['year' + str(i)],3)
                 df_e['year' + str(i)] = round(df_s['year' + str(i)] - df_b['year' + str(i)],3)

@@ -102,6 +102,20 @@ tou_select_q = pd.read_sql_query("select applicability_periods from tou_applicab
 tou_select = int(tou_select_q.values[0])
 # print(tou_select)
 
+def tou_charge():
+    TOU_p_q = pd.read_sql_query(
+        "select period, tier, min, maximum, energy_charge,bill_amt from tou_period_energy_charge where tariff_type_id=" + str(
+            tariff_id) + " and voltage_type_id=" + str(voltage_id) + " and state_id=" + str(
+            state_id) + " and period=" + str(2), conn)
+    TOU_p = TOU_p_q
+
+    # Off peak TOU table
+    TOU_op_q = pd.read_sql_query(
+        "select period, tier, min, maximum, energy_charge,bill_amt from tou_period_energy_charge where tariff_type_id=" + str(
+            tariff_id) + " and voltage_type_id=" + str(voltage_id) + " and state_id=" + str(
+            state_id) + " and period=" + str(3), conn)
+    TOU_op = TOU_op_q
+    return TOU_p, TOU_op
 # Retrieve the Network charge and Compensation rate
 def network_charge_fetch(user_pv_capacity):
     if state_id == 1 and voltage_id == 1:

@@ -29,20 +29,30 @@ def SOC(ch_dis_available, x1):
 	soc[0] = socbatin
 	battery_power = np.zeros(n)
 
-	for i in range(n - 1):
-		k = i + 1
-		if batstatus[k] == -1 and (ch_dis_available[k] + soc[k - 1]) < socbatmax:
-			soc[k] = ch_dis_available[k] + soc[k - 1]
+	# for i in range(n - 1):
+	# 	k = i + 1
+	# 	if batstatus[k] == -1 and (ch_dis_available[k] + soc[k - 1]) < socbatmax:
+	# 		soc[k] = ch_dis_available[k] + soc[k - 1]
+	# 	else:
+	# 		soc[k] = socbatmax
+	# 	if batstatus[k] == 1 and (soc[k - 1] - ch_dis_available[k]) > socbatmin:
+	# 		soc[k] = soc[k - 1] - ch_dis_available[k]
+	# 	else:
+	# 		soc[k] = socbatmin
+	# 	if batstatus[k] == 0:
+	# 		soc[k] = soc[k - 1]
+	#
+	# 	battery_power[k] = soc[k - 1] - soc[k]  # calculating actual battery discharging and charging power
+	for k in range(1, n):
+		if batstatus[k] == -1:
+			soc[k] = min(ch_dis_available[k] + soc[k - 1], socbatmax)
+		elif batstatus[k] == 1:
+			soc[k] = max(soc[k - 1] - ch_dis_available[k], socbatmin)
 		else:
-			soc[k] = socbatmax
-		if batstatus[k] == 1 and (soc[k - 1] - ch_dis_available[k]) > socbatmin:
-			soc[k] = soc[k - 1] - ch_dis_available[k]
-		else:
-			soc[k] = socbatmin
-		if batstatus[k] == 0:
 			soc[k] = soc[k - 1]
 
-		battery_power[k] = soc[k - 1] - soc[k]  # calculating actual battery discharging and charging power
+		battery_power[k] = soc[k - 1] - soc[k]
+	battery_power = np.where(battery_power < 0, 0, battery_power)
 	# print(soc)
 	return battery_power
 

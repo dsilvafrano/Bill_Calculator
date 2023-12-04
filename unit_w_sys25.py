@@ -8,12 +8,13 @@ import time
 # Packages required
 import pandas as pd
 from Inputs import ts
-from TOU import tou_matrix
+from TOU import tou
 
 # print('Entering grid units with system')
 
 # TOU matrix
-TOU = tou_matrix
+TOU_n = tou()
+TOU = TOU_n[0]
 # Retrieving dataframe with time stamp and days
 # days = API.solarp['day']
 TS = ts

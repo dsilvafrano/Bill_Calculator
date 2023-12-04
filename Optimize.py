@@ -23,7 +23,7 @@ sl = 10
 
 #Optuna
 def objective(trial):
-    x = trial.suggest_float("x", 1, 80,)
+    x = trial.suggest_float("x", 1, 70)
     y = trial.suggest_float("y", 0, 0,)
     x1 = [x,y]
     return (financial_calc(x1)[7])
@@ -75,7 +75,7 @@ npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, N
         ,  average_annualcashflow,s_unit_yr1,grid_contri,solar_contri,batt_contri,export_contri, Av_emission_CO2, \
         Yr1_units, Elec_bill_withoutDER,Elec_bill_withDER,shade_free_area, solar_pv_cost, inverter_cost, battery_cost, \
         subsidy_cost,tou_select, Yr1_units_24x365, Yr1_g_units_24x365, Yr1_s_units_24x365, Yr1_b_units_24x365, \
-        Yr1_e_units_24x365  = financial_calc(x1)
+        Yr1_e_units_24x365,compensation_rate,W_avg_EC_BAU,W_avg_EC_DER  = financial_calc(x1)
 # Result = np.fromiter((financial_calc(x1)),dtype='float')
 #printing the results
 print('Solar PV capacity(kW):', x1[0])
@@ -102,6 +102,9 @@ print('Inverter cost:', str(inverter_cost))
 print('Battery cost:', str(battery_cost))
 print('Subsidy cost:', str(subsidy_cost))
 print('TOU Applicability:', str(tou_select))
+print('Compensation rate (INR/kWh):',compensation_rate)
+print('Average tariff - BAU case (INR/kWh):',W_avg_EC_BAU)
+print('Average tariff - DER case (INR/kWh):', W_avg_EC_DER)
 print('24x365 matrix: Load', Yr1_units_24x365)
 print('24x365 matrix: To load from Grid', Yr1_g_units_24x365)
 print('24x365 matrix: To load from Solar', Yr1_s_units_24x365)

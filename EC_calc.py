@@ -5,7 +5,7 @@ import time
 
 from SQL import tou_select
 from escalation import slab_selection
-
+import numpy as np
 
 # Inputs required
 tou_select = tou_select
@@ -15,6 +15,9 @@ tou_select = tou_select
 def EC(list):
     # # starting time
     # start1 = time.time()
+    EC_N = list[5]
+    EC_P = list[6]
+    EC_OP = list[7]
     for j in range (0,12):
         m_units = list[0]
         m_units_n = list[1]
@@ -27,7 +30,7 @@ def EC(list):
         bill_amt_n = 0
         bill_amt_p = 0
         bill_amt_op = 0
-        list_s = [m_units, n]
+        list_s = [m_units, n, EC_N, EC_P, EC_OP]
         if m_units == 0:
             bill_amt_n = 0
             bill_amt_p = 0
@@ -37,7 +40,8 @@ def EC(list):
             # print(list_s)
             EC_s = slab_selection(list_s)
             EC = EC_s[0]
-            Ec_avg = EC['energy_charge'].mean()
+            Ec_avg = np.mean(EC['energy_charge'])
+            # Ec_avg = EC['energy_charge'].mean()
             EC_p = EC_s[2]
             EC_op = EC_s[3]
             # EC['energy_charge'] * (1 + (n * cost_esc))
@@ -47,7 +51,7 @@ def EC(list):
             # EC_op['energy_charge'] * (1 + (n * cost_esc))
             # print(EC_op['energy_charge'])
             # print(EC_s)
-            m_tier = (EC['tier'].max())
+            m_tier = EC['tier'].max()
             # print(m_tier)
             # print(EC['bill_amt'])
             # print(EC['energy_charge'])
@@ -90,6 +94,9 @@ def EC(list):
 
         # print('Normal, Peak, Of-peak', bill_amt_n, bill_amt_p, bill_amt_op)
         bill_amt_EC = int(bill_amt_n + bill_amt_p + bill_amt_op)
+        # print('normal', bill_amt_n)
+        # print('peak', bill_amt_p)
+        # print('off-peak', bill_amt_op)
         # end time
         # end1 = time.time()
         #

@@ -14,6 +14,7 @@ from unit_w_sys25 import unit_w_sys25
 from grid_w_sys25 import grid_w_sys25
 from SQL import network_charge_fetch, cost_esc
 from EC_calc import EC
+from EC_select import EC_select
 
 # Inputs required
 # x1 = np.zeros(2, dtype=float)
@@ -21,11 +22,15 @@ from EC_calc import EC
 # x1[1] = Inputs.x1[1] # user input storage capacity
 
 # Function to do the bill calculation
-def NF(x1):
+def NF(x1, EC_N, EC_P, EC_OP):
     # starting time
     # start1 = time.time()
     EC_avg25 = pd.DataFrame()
     bill_amt_25 = pd.DataFrame()
+    # EC = EC_select()
+    EC_N = EC_N
+    EC_P = EC_P
+    EC_OP = EC_OP
     #Network charge and compensation rate
     NC = network_charge_fetch(x1[0])[0]
     CR = network_charge_fetch(x1[0])[1]
@@ -65,13 +70,16 @@ def NF(x1):
 
     # #Calculation of bill for 12 months of a year
         for i in range(0,12):
-            list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n]
-
+            list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n, EC_N, EC_P, EC_OP]
+            # print('normal', g_units[1][i])
+            # print('peak', g_units[2][i])
+            # print('off-peak', g_units[3][i])
         #     # Variable for 25 year analysis
         #     EC_t = EC(list_m)
             EC_T = EC(list_m)
+            # print(EC_T)
             EC_t = EC_T[0]
-            ec_avg = EC_T[1]
+            # ec_avg = EC_T[1]
         # #Calculate the network charge applicable
             NC_t = NC * s_units[i]
             #Revenue from export to grid
@@ -79,7 +87,7 @@ def NF(x1):
             #Bill calculation for Gross metering
             bill_amt = FC + ((EC_t - CR_t) + NC_t)
             bill_amt_m.append(bill_amt)
-            EC_avg.append((ec_avg))
+            EC_avg.append((EC_t))
             # print('Bill:', n, i, EC_t)
         temp = bill_amt_m
         temp2 = EC_avg
@@ -94,7 +102,7 @@ def NF(x1):
     # print('The runtime Net Feed In inside:',runtime1)
     return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list, EC_avg25
 
-# print(round(NF(),3))
+# print(NF([1,0]))
 
 # end time
 # end = time.time()
