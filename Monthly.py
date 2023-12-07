@@ -36,17 +36,17 @@ def monthly():
         weekend_consumption_change = Inputs.weekend_consumption_change
 
         # Weekday consumption
-        weekday_consumption_6to10 = Inputs.weekday_consumption_5to9
-        weekday_consumption_10to18 = Inputs.weekday_consumption_9to17
-        weekday_consumption_18to22 = Inputs.weekday_consumption_17to22
-        weekday_consumption_22to6 = Inputs.weekday_consumption_22to5
+        weekday_consumption_5to9 = Inputs.weekday_consumption_5to9
+        weekday_consumption_9to17 = Inputs.weekday_consumption_9to17
+        weekday_consumption_17to22 = Inputs.weekday_consumption_17to22
+        weekday_consumption_22to5 = Inputs.weekday_consumption_22to5
         # print(weekday_consumption_22to6)
 
         # Weekend consumption
-        weekend_consumption_6to10 = Inputs.weekend_consumption_5to9
-        weekend_consumption_10to18 = Inputs.weekend_consumption_9to17
-        weekend_consumption_18to22 = Inputs.weekend_consumption_17to22
-        weekend_consumption_22to6 = Inputs.weekend_consumption_22to5
+        weekend_consumption_5to9 = Inputs.weekend_consumption_5to9
+        weekend_consumption_9to17 = Inputs.weekend_consumption_9to17
+        weekend_consumption_17to22 = Inputs.weekend_consumption_17to22
+        weekend_consumption_22to5 = Inputs.weekend_consumption_22to5
         # print(weekend_consumption_22to6)
 
 
@@ -55,38 +55,38 @@ def monthly():
 
         # Determining the percentage share of weekday and weekend
 
-        weekday_consumption_6to10n = weekday_consumption_6to10 / ((
-                        weekday_consumption_6to10 + weekday_consumption_10to18 + weekday_consumption_18to22 + weekday_consumption_22to6))
-        weekday_consumption_10to18n = weekday_consumption_10to18 / ((
-                        weekday_consumption_6to10 + weekday_consumption_10to18 + weekday_consumption_18to22 + weekday_consumption_22to6))
-        weekday_consumption_18to22n = weekday_consumption_18to22 / ((
-                        weekday_consumption_6to10 + weekday_consumption_10to18 + weekday_consumption_18to22 + weekday_consumption_22to6))
-        weekday_consumption_22to6n = weekday_consumption_22to6 / ((
-                        weekday_consumption_6to10 + weekday_consumption_10to18 + weekday_consumption_18to22 + weekday_consumption_22to6))
+        weekday_consumption_5to9n = weekday_consumption_5to9 / ((
+                        weekday_consumption_5to9 + weekday_consumption_9to17 + weekday_consumption_17to22 + weekday_consumption_22to5))
+        weekday_consumption_9to17n = weekday_consumption_9to17 / ((
+                        weekday_consumption_5to9 + weekday_consumption_9to17 + weekday_consumption_17to22 + weekday_consumption_22to5))
+        weekday_consumption_17to22n = weekday_consumption_17to22 / ((
+                        weekday_consumption_5to9 + weekday_consumption_9to17 + weekday_consumption_17to22 + weekday_consumption_22to5))
+        weekday_consumption_22to5n = weekday_consumption_22to5 / ((
+                        weekday_consumption_5to9 + weekday_consumption_9to17 + weekday_consumption_17to22 + weekday_consumption_22to5))
 
         # print(weekday_consumption_22to6n)
 
         # In case the user specifies the weekend consumption and allocated percentage
 
         if int(weekend_consumption_separate) == 1:
-            weekend_consumption_6to10n = weekend_consumption_6to10 / ((
-                    weekend_consumption_6to10 + weekend_consumption_10to18 + weekend_consumption_18to22 + weekend_consumption_22to6))
-            weekend_consumption_10to18n = weekend_consumption_10to18 / ((
-                    weekend_consumption_6to10 + weekend_consumption_10to18 + weekend_consumption_18to22 + weekend_consumption_22to6))
-            weekend_consumption_18to22n = weekend_consumption_18to22 / ((
-                    weekend_consumption_6to10 + weekend_consumption_10to18 + weekend_consumption_18to22 + weekend_consumption_22to6))
-            weekend_consumption_22to6n = weekend_consumption_22to6 / ((
-                    weekend_consumption_6to10 + weekend_consumption_10to18 + weekend_consumption_18to22 + weekend_consumption_22to6))
+            weekend_consumption_5to9n = weekend_consumption_5to9 / ((
+                    weekend_consumption_5to9 + weekend_consumption_9to17 + weekend_consumption_17to22 + weekend_consumption_22to5))
+            weekend_consumption_9to17n = weekend_consumption_9to17 / ((
+                    weekend_consumption_5to9 + weekend_consumption_9to17 + weekend_consumption_17to22 + weekend_consumption_22to5))
+            weekend_consumption_17to22n = weekend_consumption_17to22 / ((
+                    weekend_consumption_5to9 + weekend_consumption_9to17 + weekend_consumption_17to22 + weekend_consumption_22to5))
+            weekend_consumption_22to5n = weekend_consumption_22to5 / ((
+                    weekend_consumption_5to9 + weekend_consumption_9to17 + weekend_consumption_17to22 + weekend_consumption_22to5))
 
         # print(weekend_consumption_22to6n)
 
         #In the case the weekend_consumption_separate == 0
         if int(weekend_consumption_separate) == 0:
-            avg_user_load_n[5:9] = round((weekday_consumption_6to10n * avg_monthly * 12 / (365 * 4)), 3)
-            avg_user_load_n[9:17] = round((weekday_consumption_10to18n * avg_monthly * 12 / (365 * 8)), 3)
-            avg_user_load_n[17:22] = round((weekday_consumption_18to22n * avg_monthly * 12 / (365 * 5)), 3)
-            avg_user_load_n[22:24] = round((weekday_consumption_22to6n * avg_monthly * 12 * 0.29 / (365 * 2)), 3)
-            avg_user_load_n[0:5] = round((weekday_consumption_22to6n * avg_monthly * 12 * 0.71 / (365 * 5)), 3)
+            avg_user_load_n[5:9] = round((weekday_consumption_5to9n * avg_monthly * 12 / (365 * 4)), 3)
+            avg_user_load_n[9:17] = round((weekday_consumption_9to17n * avg_monthly * 12 / (365 * 8)), 3)
+            avg_user_load_n[17:22] = round((weekday_consumption_17to22n * avg_monthly * 12 / (365 * 5)), 3)
+            avg_user_load_n[22:24] = round((weekday_consumption_22to5n * avg_monthly * 12 * 0.29 / (365 * 2)), 3)
+            avg_user_load_n[0:5] = round((weekday_consumption_22to5n * avg_monthly * 12 * 0.71 / (365 * 5)), 3)
 
         # Applying the daily consumption to the whole year
             avg_user_load_n = np.tile(avg_user_load_n, 365)
@@ -99,17 +99,17 @@ def monthly():
             weekday_daily = round((avg_monthly * 12) / (261 + round(104 * (weekend_consumption_change + 1))))
             weekend_daily = round((weekend_consumption_change + 1) * weekday_daily)
 
-            weekday_24[5:9] = round((weekday_consumption_6to10n * (weekday_daily) / 4), 3)
-            weekday_24[9:17] = round((weekday_consumption_10to18n * (weekday_daily) / 8), 3)
-            weekday_24[17:22] = round((weekday_consumption_18to22n * (weekday_daily) / 5), 3)
-            weekday_24[22:24] = round((weekday_consumption_22to6n * (weekday_daily * 0.29) / 2), 3)
-            weekday_24[0:5] = round((weekday_consumption_22to6n * (weekday_daily * 0.71) / 5), 3)
+            weekday_24[5:9] = round((weekday_consumption_5to9n * (weekday_daily) / 4), 3)
+            weekday_24[9:17] = round((weekday_consumption_9to17n * (weekday_daily) / 8), 3)
+            weekday_24[17:22] = round((weekday_consumption_17to22n * (weekday_daily) / 5), 3)
+            weekday_24[22:24] = round((weekday_consumption_22to5n * (weekday_daily * 0.29) / 2), 3)
+            weekday_24[0:5] = round((weekday_consumption_22to5n * (weekday_daily * 0.71) / 5), 3)
 
-            weekend_24[5:9] = round((weekend_consumption_6to10n * (weekend_daily) / 4), 3)
-            weekend_24[9:17] = round((weekend_consumption_10to18n * (weekend_daily) / 8), 3)
-            weekend_24[17:22] = round((weekend_consumption_18to22n * (weekend_daily) / 5), 3)
-            weekend_24[22:24] = round((weekend_consumption_22to6n * (weekend_daily * 0.29) / 2), 3)
-            weekend_24[0:5] = round((weekend_consumption_22to6n * (weekend_daily * 0.71) / 5), 3)
+            weekend_24[5:9] = round((weekend_consumption_5to9n * (weekend_daily) / 4), 3)
+            weekend_24[9:17] = round((weekend_consumption_9to17n * (weekend_daily) / 8), 3)
+            weekend_24[17:22] = round((weekend_consumption_17to22n * (weekend_daily) / 5), 3)
+            weekend_24[22:24] = round((weekend_consumption_22to5n * (weekend_daily * 0.29) / 2), 3)
+            weekend_24[0:5] = round((weekend_consumption_22to5n * (weekend_daily * 0.71) / 5), 3)
 
             df_load = []
 
@@ -179,7 +179,7 @@ def monthly_data():
 # d_avg = sum(user_load['Load'])/days_n
 # avg_in_month_m = [i * d_avg for i in days_in_month]
 
-# print((monthly_data()))
+# print((monthly_data()[4][24:72]))
 # end time
 # end = time.time()
 #

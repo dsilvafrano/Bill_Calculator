@@ -29,18 +29,18 @@ load_input_type = "average_monthly"# monthwise & average_monthly
 # month_wise & average_monthly
 avg_monthly = 250
 # in case of monthwise load_input_type
-mc1 = 200
-mc2 = 200
-mc3 = 200
-mc4 = 200
-mc5 = 200
-mc6 = 200
-mc7 = 200
-mc8 = 200
-mc9 = 200
-mc10 = 200
-mc11 = 200
-mc12 = 200
+mc1 = 250
+mc2 = 250
+mc3 = 250
+mc4 = 250
+mc5 = 250
+mc6 = 250
+mc7 = 250
+mc8 = 250
+mc9 = 250
+mc10 = 250
+mc11 = 250
+mc12 = 250
 
 # Define load distribution for 24hrs weekday
 # weekday_consumption_6to10 = 30

@@ -30,17 +30,17 @@ start1 = time.time()
 # solarp = api()
 # # Converting (Wac) to (kWac)
 # solarp['AC(kW)'] = solarp['AC(kW)']/1000
-soc = np.array(([0.5] * 8760), dtype=float)
+# soc = np.array(([0.5] * 8760), dtype=float)
 # EC_t = EC_select()
 # EC_N = EC_t[0]
 # EC_P = EC_t[1]
 # EC_OP = EC_t[2]
 
 profiler = LineProfiler()
-profiler.add_function(SOC)
+profiler.add_function(financial_calc)
 
 # Run the profiler
-profiler.runcall(SOC,soc,[1,1])
+profiler.runcall(financial_calc,[1,0])
 
 # print the results
 profiler.print_stats()

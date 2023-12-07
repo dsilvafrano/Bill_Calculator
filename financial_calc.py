@@ -171,7 +171,11 @@ def financial_calc(x1):
         # print('Battery:', sum(b_unit_yr1_8760))
         # print('export:', sum(e_unit_yr1_8760))
     else:
-        Elec_bill_withDER_T = GM(x1)
+        EC = EC_select()
+        EC_N = EC[0]
+        EC_P = EC[1]
+        EC_OP = EC[2]
+        Elec_bill_withDER_T = GM(x1, EC_N, EC_P, EC_OP)
         Elec_bill_withDER_t = Elec_bill_withDER_T[0]
         g_unit_yr1 = Elec_bill_withDER_T[3]
         s_unit_yr1 = Elec_bill_withDER_T[1]

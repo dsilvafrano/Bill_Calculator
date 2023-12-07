@@ -21,9 +21,12 @@ from EC_calc import EC
 # x1[1] = Inputs.x1[1] # user input storage capacity
 
 # Function to do the bill calculation
-def GM(x1):
+def GM(x1, EC_N, EC_P, EC_OP):
     EC_avg25 = pd.DataFrame()
     bill_amt_25 = pd.DataFrame()
+    EC_N = EC_N
+    EC_P = EC_P
+    EC_OP = EC_OP
     #Network charge and compensation rate
     NC = network_charge_fetch(x1[0])[0]
     CR = network_charge_fetch(x1[0])[1]
@@ -63,7 +66,7 @@ def GM(x1):
 
     # #Calculation of bill for 12 months of a year
         for i in range(0,12):
-            list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n]
+            list_m = [g_units[0][i], g_units[1][i], g_units[2][i], g_units[3][i], n, EC_N, EC_P, EC_OP]
         #     # Variable for 25 year analysis
         #     EC_t = EC(list_m)
             EC_T = EC(list_m)
