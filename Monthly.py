@@ -2,7 +2,7 @@
 import time
 
 # starting time
-# start = time.time()
+
 import os
 import sys
 # Packages required
@@ -19,6 +19,7 @@ from Inputs import wk, ts, avg_monthly, weekend_consumption_separate, weekend_co
 
 # print('Entering monthly')
 def monthly():
+    start = time.time()
     try:
         # In case of monthly average
         avg_monthly = Inputs.avg_monthly
@@ -124,6 +125,11 @@ def monthly():
         # date = date.today()
         # year = date.year
         # days_n =366 if calendar.isleap(year) else 365
+        # end time
+        end = time.time()
+
+        runtime = (end - start)
+        print('The runtime Monthly:', runtime)
         return TS, TOU, avg_user_load_n
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -132,6 +138,7 @@ def monthly():
         print('Error ', e);
 
 def monthly_data():
+    start = time.time()
     data = monthly()
     TS = data[0]
     TOU = data[1]
@@ -163,6 +170,11 @@ def monthly_data():
     # print((user_load[0:24]))
     # print(avg_in_month_m, avg_in_month_m_n, avg_in_month_m_p, avg_in_month_m_op)
     # print(avg_in_month_m)
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Monthly2:', runtime)
     return avg_in_month_m, avg_in_month_m_n, avg_in_month_m_p, avg_in_month_m_op, user_load['Load']
 
 
@@ -180,9 +192,5 @@ def monthly_data():
 # avg_in_month_m = [i * d_avg for i in days_in_month]
 
 # print((monthly_data()[4][24:72]))
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime Monthly:', runtime)
+
 

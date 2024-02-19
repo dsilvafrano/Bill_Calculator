@@ -6,7 +6,7 @@ from SQL import conn
 import time
 
 # starting time
-# start = time.time()
+start = time.time()
 
 #SQL connection
 conn = conn
@@ -96,7 +96,7 @@ fixed_charge_h = fixed_charge_a / 8760
 # print("fixed charge per hour =", str(fixed_charge_h))
 
 # end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime FC & EC:', runtime)
+end = time.time()
+
+runtime = (end - start)
+print('The runtime FC & EC:', runtime)

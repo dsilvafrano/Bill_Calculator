@@ -1,7 +1,7 @@
 # Packages required
 import time
 # # starting time
-# start1 = time.time()
+
 
 import pandas as pd
 import Inputs
@@ -10,6 +10,7 @@ from SQL import conn
 from FC_EC_calc import slab_id_m
 
 def EC_select():
+    start = time.time()
     state_id = Inputs.state_id
     voltage_id = Inputs.voltage_id
     tariff_id = Inputs.tariff_id
@@ -43,6 +44,11 @@ def EC_select():
     # EC = pd.DataFrame()
     # EC = EC_T[EC_T['slab_id'] == 4]
     # EC = EC.reset_index(drop=True)
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime EC select:', runtime)
     return EC_T, TOU_p_T, TOU_op_T
 
 # print('the EC table are',(EC_select()))

@@ -9,9 +9,10 @@ import pandas as pd
 import SQL
 import os
 import sys
-# start = time.time()
+
 
 def tou():
+    start = time.time()
     try:
         tariff_id = Inputs.tariff_id
         voltage_id = Inputs.voltage_id
@@ -71,6 +72,11 @@ def tou():
         #
         # runtime = (end - start)
         # print('The runtime TOU:', runtime)
+        # end time
+        end = time.time()
+
+        runtime = (end - start)
+        print('The runtime TOU matrix:', runtime)
         return tou_matrix, tou_select
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()

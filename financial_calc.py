@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-# start = time.time()
+
 # from line_profiler import LineProfiler
 import pandas as pd
 import numpy as np
@@ -27,6 +27,7 @@ from EC_select import EC_select
 nyr = 26
 
 def financial_calc(x1):
+    start = time.time()
     if load_input_type == "average_monthly":
         Yr1_units_m = Monthly.monthly_data()
         Yr1_units = Yr1_units_m[0]
@@ -351,6 +352,11 @@ def financial_calc(x1):
     total_savings_bill = sum(total_savings)
     roi = ((cum_cashflow) / sum(total_cost)) * 100 * (1 / 25)
     roi = roi
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Financial calculation:', runtime)
 
     return npv, payback_year, cum_cashflow, roi, total_savings_bill, bau_npv, dis_saving, NPV_to_Savings, \
            amount_invested, average_annualcashflow,avg_annual_solar,grid_contri,solar_contri,batt_contri,export_contri,\
@@ -367,8 +373,3 @@ def financial_calc(x1):
 #
 # # print the results
 # profiler.print_stats()
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime Financial calculation:', runtime)

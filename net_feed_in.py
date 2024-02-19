@@ -2,7 +2,7 @@
 # Packages required
 import time
 # starting time
-# start = time.time()
+
 
 import pandas as pd
 import numpy as np
@@ -23,6 +23,7 @@ from EC_select import EC_select
 
 # Function to do the bill calculation
 def NF(x1, EC_N, EC_P, EC_OP):
+    start = time.time()
     # starting time
     # start1 = time.time()
     EC_avg25 = pd.DataFrame()
@@ -100,12 +101,12 @@ def NF(x1, EC_N, EC_P, EC_OP):
     #
     # runtime1 = (end1 - start1)
     # print('The runtime Net Feed In inside:',runtime1)
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Net Feed In:', runtime)
     return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list, EC_avg25
 
 # print(NF([1,0]))
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime Net Feed In:', runtime)

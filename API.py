@@ -4,16 +4,19 @@
 import pandas as pd
 import requests
 import Inputs
+import time
 #
 # # starting time
-# start = time.time()
+
 def api():
     ##Location details
+    start = time.time()
     #Fetch solar data using latitude and longitude (get the latitude and longitude using the pincode data)
     latitude = Inputs.latitude
     longitude = Inputs.longitude
     print('Latitude:', latitude)
     print('Longitude:', longitude)
+
     #API call for a premium 1kW PV panel having 19 percent efficiency, fixed roof mounted type at tilt angle 12 degrees
 
     response = requests.get("https://developer.nrel.gov/api/pvwatts/v6.json?api_key"
@@ -22,7 +25,7 @@ def api():
                             "&azimuth=180&tilt=12&array_type=1&module_type=1&losses=11&timeframe=hourly")
 
     outpts = response.json()['outputs']
-
+    # print(outpts)
     # Hourly AC system output (only when timeframe=hourly) (Wac)
     acpwr = outpts['ac']
     # print(acpwr)
@@ -53,10 +56,12 @@ def api():
     # Converting (Wac) to (kWac)
     solarp['AC(kW)'] = solarp['AC(kW)']
     # print(solarp[0:24])
+    end = time.time()
+    runtime = end - start
+    print('The runtime API:',runtime )
     return solarp
 
 # end time
-# end = time.time()
+
 #
 # runtime = (end - start)
-# print('The runtime API:', runtime)

@@ -2,7 +2,7 @@
 # Packages required
 import time
 # # starting time
-# start = time.time()
+
 
 import pandas as pd
 import numpy as np
@@ -21,6 +21,7 @@ from bill_unitsNM import bill_unitsNM
 
 # Function to do the bill calculation
 def NM(x1, EC_N, EC_P, EC_OP):
+    start = time.time()
     # starting time
     # start1 = time.time()
     EC_avg25 = pd.DataFrame()
@@ -101,13 +102,13 @@ def NM(x1, EC_N, EC_P, EC_OP):
     #
     # runtime1 = (end1 - start1)
     # print('The runtime Net Metering inside:', i, runtime1)
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Net Metering:', runtime)
     return bill_amt_25, s_units_yr0, e_units_yr0, g_units_yr0,b_units_yr0, g_units_8760, s_units_8760, b_units_8760, \
            e_units_8760, EC_avg25
 
 # print(NM([1,0]))
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime Net Metering:', runtime)
