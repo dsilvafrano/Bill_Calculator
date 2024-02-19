@@ -158,7 +158,7 @@ def investmentcost_calculate(system_capacity, bat_sim_kwh):
             total_installation_cost = (float(system_capacity) * float(financial_fetch(sload)[2]))
 
     return total_installation_cost
-print('The installation cost is:', investmentcost_calculate(10, 0))
+# print('The installation cost is:', investmentcost_calculate(10, 0))
 
 # Replacement cost Calculation
 # find the replacement cost of inverter and battery
@@ -183,10 +183,10 @@ def replacement_cost(system_capacity, bat_sim_kwh):
             if i in rep_yrs_inverter:
                 rep_inverter_cost[k] = float(financial_fetch(sload)[3]) * system_capacity
     return rep_battery_cost, rep_inverter_cost
-print('The replacement costs are:',sum(replacement_cost(10, 0)[0]), sum(replacement_cost(10, 0)[1]) )
+# print('The replacement costs are:',sum(replacement_cost(10, 0)[0]), sum(replacement_cost(10, 0)[1]) )
 
 # end time
 end = time.time()
 
 runtime = (end - start)
-print('The runtime is:', runtime)
+print('The Financial cost runtime is:', runtime)

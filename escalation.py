@@ -1,7 +1,7 @@
 # Packages required
 import time
 # # starting time
-# start1 = time.time()
+
 
 import pandas as pd
 
@@ -35,6 +35,7 @@ sload = sload
 
 # selection of appropriate slab with respect to the monthly avg consumption & escalating it accordingly
 def slab_selection(list_s):
+    start = time.time()
     avg_monthly = list_s[0]
     # print(avg_monthly)
     n = list_s[1]
@@ -90,21 +91,19 @@ def slab_selection(list_s):
 
     temp_EC_op = EC_op_cost_esc['energy_charge']
     EC_op_cost_esc['energy_charge'] = temp_EC_op.apply(lambda x: x * (1 + n * cost_esc))
-    # end time
-    end1 = time.time()
 
-    runtime1 = (end1 - start1)
-    # print('The runtime slab selection inside:', runtime1)
     list_s_up = [EC_matrix, slab_id_a, EC_p_cost_esc, EC_op_cost_esc]
+    #end time
+    end = time.time()
+    runtime = (end - start)
+    print('The runtime Escalation:', runtime)
     return list_s_up
 
 # print('The selected EC table is:', float(slab_selection(200, 0)[3]['energy_charge']))
 
 # end time
 # start = Monthly.start
-# end = time.time()
-# # #
-# runtime = (end - start1)
+
 #start time
 # start = time.time()
 # print('Result:', slab_selection([5000,0]))
@@ -112,4 +111,3 @@ def slab_selection(list_s):
 # end1 = time.time()
 # runtime1 = (end1 - start)
 # # print('The runtime Total:', runtime)
-# print('The runtime Escalation:', runtime1)

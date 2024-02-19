@@ -2,7 +2,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+
 import pandas as pd
 import numpy as np
 from SQL import socmin
@@ -33,6 +33,7 @@ metering_type = metering_type
 
 # power balance for the selected size
 def power_balance(x1,solarp, g):
+    start = time.time()
     # starting time
     start2 = time.time()
     # print(x1[0])
@@ -213,6 +214,11 @@ def power_balance(x1,solarp, g):
     # print('The runtime for power balance is:',runtime2)
     # print('Total solar :', sum_solar)
     # print('Export:', sum(excessder))
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime power balance:', runtime)
     return df1, sum_battery, sum_grid, sum_export, sum_solar, sum_solar_load
 
 # solarp = api()
@@ -220,8 +226,3 @@ def power_balance(x1,solarp, g):
 # solarp['AC(kW)'] = solarp['AC(kW)']/1000
 # #
 # print('The power balance details:', power_balance([1,1],solarp,0))
-# end time
-end = time.time()
-
-runtime = (end - start)
-# print('The runtime power balance:', runtime)

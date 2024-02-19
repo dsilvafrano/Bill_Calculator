@@ -3,7 +3,7 @@
 import time
 
 # starting time
-# start = time.time()
+
 
 # Packages required
 import pandas as pd
@@ -22,6 +22,7 @@ days = wk
 TS = ts
 
 def grid_w_sys25(x1):
+    start = time.time()
     g_units = pd.DataFrame()
     g_units_T = esc25(x1)
     g_units = g_units_T[1]
@@ -62,14 +63,14 @@ def grid_w_sys25(x1):
     g_units_d = pd.concat(temp, axis=1)
 
     # print(g_units_d['year25'][3])
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime grid with system 25 year:', runtime)
 
     return g_units_d, a_units, g_units_8760
 
 # print((grid_w_sys25()))
 
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime grid with system 25 year:', runtime)

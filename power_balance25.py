@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+
 
 import pandas as pd
 import numpy as np
@@ -23,10 +23,23 @@ der_deg = der_deg
 # print(der_deg)
 batstatus = batstatus
 metering_type = metering_type
+SolarP = pd.read_csv("Chennai_weather_file.csv", header=None) # Reading the weather file from local
+SolarP = SolarP.iloc[3:] # Removing the first 3 rows from the Dataframe as not required
+SolarP = SolarP.reset_index(drop=True) # Resetting the index
+# print('The weather file', (SolarP[8][0:24]))
+SolarP = SolarP.apply(pd.to_numeric, errors = 'coerce') # Converting all elements to numeric
+Solarp: float = SolarP[7] / 1000 # Storing DNI value in variable and converting W/m2 to kW/m2 by dividing by 1000
+# print('The weather file', (Solarp[0:24]))
+solar_p: float = Solarp * (10 * 0.19 * 0.50) # Calculating the generation from a panel covering 10m2 having an efficiency
+                                             # of 19% and a performance ratio (to consider other losses), PR = 50%
+# print('The weather file', (sum(solar_p)/365))
 solarp = api()
 # Converting (Wac) to (kWac)
-solarp['AC(kW)'] = solarp['AC(kW)']/1000
+solarp['AC(kW)'] = solarp['AC(kW)']/1000 #Replace with 'solar_p' variable here. 'solar_p' has been retrieved from the weather file
+#Note: Place the code from line 26 to line 38 within the function - esc25() - to accomodate dynamic change to the weather file
 
+# print('The solar PV capacity', sum(solarp['AC(kW)'])/365)
+start = time.time()
 def esc25(x1):
     bat_inv = 0.835 * x1[0]
     socbatmax = socmax * x1[1]
@@ -63,7 +76,7 @@ def esc25(x1):
     # df_exsol['year0'] = round(df_a[0]['exsolar'], 3)
     df_batst['year0'] = round(df_a[0]['batstatus'], 3)
 
-
+    start1 = time.time()
     #Populating the dataframe
     for i in range (1,26):
         df_l['year' + str(i)] = df_a[0]['load'] * (1 + (i * load_esc))
@@ -85,7 +98,7 @@ def esc25(x1):
             df_ch['year' + str(i)] = np.select(cond_ch,choice_ch)
 
             # Battery power for year i
-            df_b['year' + str(i)] = SOC(df_ch['year' + str(i)], x1).round(3)
+            df_b['year' + str(i)] = SOC(np.zeros(8760),[1,1])#SOC(df_ch['year' + str(0)], x1).round(3)
             # Removing all negative values to find sum of battery contribution
             # df_b['year' + str(i)] = np.where((df_b['year' + str(i)] < 0), 0, df_b['year' + str(i)]).round(3)
             if metering_type == "Gross Metering":
@@ -118,13 +131,17 @@ def esc25(x1):
     pb_df = pd.DataFrame()
     pb_df = [df_l, df_g, df_s, df_b, df_e]
     # print(pb_df[0:24])
+    end1 = time.time()
+    runtime1 = (end1 - start1)
+    print('The runtime power balance 25 year:', runtime1)
     return pb_df
 
-# print('The contents are:', sum(esc25()[0]['year1']))
-
+# print('The contents are:', (esc25([1,1])))
+#
 
 # end time
-end = time.time()
-
-runtime = (end - start)
+# end = time.time()
+#
+# runtime = (end - start)
+#
 # print('The runtime power balance 25 year:', runtime)

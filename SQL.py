@@ -10,7 +10,7 @@ from Inputs import sload, state_id, voltage_id, metering_id, tariff_id, state, t
 import time
 
 # starting time
-# start = time.time()
+
 
 # create connection to DB
 random_no = 0.3555
@@ -103,6 +103,7 @@ tou_select = int(tou_select_q.values[0])
 # print(tou_select)
 
 def tou_charge():
+    start = time.time()
     TOU_p_q = pd.read_sql_query(
         "select period, tier, min, maximum, energy_charge,bill_amt from tou_period_energy_charge where tariff_type_id=" + str(
             tariff_id) + " and voltage_type_id=" + str(voltage_id) + " and state_id=" + str(
@@ -115,9 +116,15 @@ def tou_charge():
             tariff_id) + " and voltage_type_id=" + str(voltage_id) + " and state_id=" + str(
             state_id) + " and period=" + str(3), conn)
     TOU_op = TOU_op_q
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime TOU:', runtime)
     return TOU_p, TOU_op
 # Retrieve the Network charge and Compensation rate
 def network_charge_fetch(user_pv_capacity):
+    start = time.time()
     if state_id == 1 and voltage_id == 1:
         if float(user_pv_capacity) <= 10:
             network_charge_df = pd.read_sql_query("select network_charge from network_charge where state_id=" + str(
@@ -155,12 +162,17 @@ def network_charge_fetch(user_pv_capacity):
     compensation_rates = float(comp_charge_df.values[0])
     # print('compensation rate:', compensation_rates)
     # print('network_charges:', network_charges)
+    # end time
+    end = time.time()
 
+    runtime = (end - start)
+    print('The runtime NC :', runtime)
     return network_charges, compensation_rates
 # print('The compensation rate & network charges are:', network_charge_fetch(10))
 
 # Retrieve Financial suggestion
 def financial_fetch(user_pv_capacity):
+    start = time.time()
     df_for_state_id = pd.read_sql_query("select id from state WHERE name=" + f'"{state}"', conn)
     state_id = df_for_state_id['id'].values[0]
 
@@ -203,12 +215,17 @@ def financial_fetch(user_pv_capacity):
     lead_acid = str(df_for_cost_suggestion['lead_acid'].values[0])
 
     #     print('The capital cost is:', capital_cost)
+    # end time
+    end = time.time()
 
+    runtime = (end - start)
+    print('The runtime Financial fetch:', runtime)
     return max_limit_pv, min_limit_pv, capital_cost, inverter_cost, hybrid_inverter, pv_cost, li_ion, lead_acid
 # print('The capital cost is:',financial_fetch(10)[2])
 
 # Total investment cost
 def investmentcost_calculate(system_capacity, bat_sim_kwh):
+    start = time.time()
     # print('solar size:', system_capacity)
     if solar & battery:
         if bat_type == 1:
@@ -235,13 +252,18 @@ def investmentcost_calculate(system_capacity, bat_sim_kwh):
                 solarpv_subsidy) * system_capacity
         else:
             total_installation_cost = (float(system_capacity) * float(financial_fetch(sload)[2]))
+    # end time
+    end = time.time()
 
+    runtime = (end - start)
+    print('The runtime Investment calc:', runtime)
     return total_installation_cost
 # print('The installation cost is:', investmentcost_calculate(10, 0))
 
 # Replacement cost Calculation
 # find the replacement cost of inverter and battery
 def replacement_cost(system_capacity, bat_sim_kwh):
+    start = time.time()
     rep_battery_cost = np.zeros(nyr)
     rep_inverter_cost = np.zeros(nyr)
     if bat_type == 1:
@@ -261,11 +283,11 @@ def replacement_cost(system_capacity, bat_sim_kwh):
             i = k + 1
             if i in rep_yrs_inverter:
                 rep_inverter_cost[k] = float(financial_fetch(sload)[3]) * system_capacity
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Replacement cost:', runtime)
     return rep_battery_cost, rep_inverter_cost
 # print('The replacement costs are:',sum(replacement_cost(10, 0)[0]), sum(replacement_cost(10, 0)[1]) )
 
-# # end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime SQL:', runtime)

@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-# start = time.time()
+
 
 import pandas as pd
 # import Bill_w_o_sys
@@ -12,6 +12,7 @@ from Bill_w_o_sys import bill_w_o_sys
 
 # 25 year bill without system
 def bill_w_o_sys25():
+    start = time.time()
     # starting time
     # start2 = time.time()
     bill_w_o_sys25 = pd.DataFrame()
@@ -37,7 +38,11 @@ def bill_w_o_sys25():
     # runtime2 = (end2 - start2)
     # print('The runtime Bill without system:',i,':', runtime2)
     # bill_w_o_sys25['Total'] = bill_w_o_sys25_T
+    # end time
+    end = time.time()
 
+    runtime = (end - start)
+    print('The runtime Bill without system 25 year:', runtime)
     return bill_w_o_sys25, EC_avg25
 # starting time
 # start1 = time.time()
@@ -51,8 +56,3 @@ def bill_w_o_sys25():
 # runtime1 = (end1 - start1)
 # print('The runtime Bill without system : print:', runtime1)
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# # print('The runtime Bill without system 25 year:', runtime)

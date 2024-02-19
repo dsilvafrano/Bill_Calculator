@@ -1,7 +1,7 @@
 #TOU and tiered calculation of energy charge
 import time
 # starting time
-# start = time.time()
+
 
 from SQL import tou_select
 from escalation import slab_selection
@@ -13,6 +13,7 @@ tou_select = tou_select
 
 
 def EC(list):
+    start = time.time()
     # # starting time
     # start1 = time.time()
     EC_N = list[5]
@@ -102,12 +103,12 @@ def EC(list):
         #
         # runtime1 = (end1 - start1)
         # print('The runtime EC charge selection:', runtime1)
+        # end time
+        end = time.time()
+
+        runtime = (end - start)
+        print('The runtime EC bill:', runtime)
         return bill_amt_EC, Ec_avg
 
 # list  =[103.042, 103.042, 0, 0, 0]
 # print(EC(list))
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime EC bill:', runtime)

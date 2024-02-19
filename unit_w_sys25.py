@@ -3,7 +3,7 @@
 import time
 
 # starting time
-# start = time.time()
+
 
 # Packages required
 import pandas as pd
@@ -20,6 +20,7 @@ TOU = TOU_n[0]
 TS = ts
 
 def unit_w_sys25(list):
+    start = time.time()
     units = pd.DataFrame()
     units = list[0]
     units_t = pd.DataFrame()
@@ -62,14 +63,15 @@ def unit_w_sys25(list):
     units1_d = pd.concat(temp1, axis=1)
     units2_d = pd.concat(temp2, axis=1)
     # print(units_d)
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime units with system 25 year:', runtime)
     return units_d, units1_d, units2_d
 
 # print((unit_w_sys25(esc25()[2],esc25()[3],esc25()[4])))
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime units with system 25 year:', runtime)
+
 
 

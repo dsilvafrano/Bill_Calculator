@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-start = time.time()
+
 
 import pandas as pd
 
@@ -13,6 +13,7 @@ from grid_w_sys25 import grid_w_sys25
 
 # Function to do the bill calculation
 def bill_unitsNM(x1):
+    start = time.time()
     bill_unit_25 = pd.DataFrame()
 
     ##Grid units : Has value for total, normal, peak & offpeak units
@@ -71,12 +72,12 @@ def bill_unitsNM(x1):
             t_units[i] = (n_units[i] + p_units[i] + op_units[i])
         units_25['year' + str(n)] = [t_units, n_units, p_units, op_units, e_units_up, s_units, b_units]
     # print(units_25)
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Net Metering bill units:', runtime)
     return units_25, e_units, g_units_8760, s_units_t, b_units_t, e_units_t
 
 # print(bill_unitsNM())
 
 # end time
-end = time.time()
-
-runtime = (end - start)
-# print('The runtime Net Metering bill units:', runtime)

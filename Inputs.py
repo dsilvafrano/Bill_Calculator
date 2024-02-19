@@ -10,24 +10,24 @@ import pandas as pd
 # start = time.time()
 
 #Inputs from users
-latitude = 12.0052#19.076090#23.486839#26.850000 #12.0052 #23.033863 #9.894568695410525 #12.0052
-longitude = 79.8089#72.877426#75.659157#80.949997 #79.8089 #72.585022 #78.07983441534354 #79.8069
-sload = 10  # from user
-tariff_id = 1 # consumer type Domestic=1, Industrial=2, Commercial=3, Private=4, Public=5,
+latitude = 23.0225#19.076090#23.486839#26.850000 #12.0052 #23.033863 #9.894568695410525 #12.0052
+longitude = 72.5714#72.877426#75.659157#80.949997 #79.8089 #72.585022 #78.07983441534354 #79.8069
+sload = 120  # from user
+tariff_id = 2 # consumer type Domestic=1, Industrial=2, Commercial=3, Private=4, Public=5,
                 # Domestic-LT1-D = 6, E.V charging = 7, Group Housing Society = 8
-voltage_id = 1 # voltage type LT = 1, HT = 2
-voltage = "LT"
-tariff = 'Domestic' #Domestic, Industrial, Commercial, Private, Public,Domestic-LT1-D, E.V charging, Group Housing Society
+voltage_id = 2 # voltage type LT = 1, HT = 2
+voltage = "HT"
+tariff = 'Industrial' #Domestic, Industrial, Commercial, Private, Public,Domestic-LT1-D, E.V charging, Group Housing Society
 residence_type = 'Independent House'
-metering_id = 1
-state_id = 1
-state = "Tamil Nadu"#"Maharashtra"#"Madhya Pradesh"#"Uttar Pradesh" #"Gujarat" #"Delhi" #"Tamil Nadu"
-metering_type = "Net Feed In" #Gross Metering, Net Feed In, Net Metering
+metering_id = 16
+state_id = 9
+state = "Gujarat"#"Maharashtra"#"Madhya Pradesh"#"Uttar Pradesh" #"Gujarat" #"Delhi" #"Tamil Nadu"
+metering_type = "Net Metering" #Gross Metering, Net Feed In, Net Metering
 weekend_consumption_change = -0.25
-weekend_consumption_separate = 1 # if this is 1, it means there is weekend consumption
+weekend_consumption_separate = 0 # if this is 1, it means there is weekend consumption
 load_input_type = "average_monthly"# monthwise & average_monthly
 # month_wise & average_monthly
-avg_monthly = 250
+avg_monthly = 1000
 # in case of monthwise load_input_type
 mc1 = 250
 mc2 = 250
@@ -49,9 +49,9 @@ mc12 = 250
 # weekday_consumption_22to6 = 20
 
 weekday_consumption_5to9 = 20
-weekday_consumption_9to17 = 50
-weekday_consumption_17to22 = 20
-weekday_consumption_22to5 = 10
+weekday_consumption_9to17 = 20
+weekday_consumption_17to22 = 40
+weekday_consumption_22to5 = 20
 
 # Define load distribution for 24hrs weekend
 

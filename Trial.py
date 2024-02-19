@@ -37,10 +37,10 @@ start1 = time.time()
 # EC_OP = EC_t[2]
 
 profiler = LineProfiler()
-profiler.add_function(financial_calc)
+profiler.add_function(esc25)
 
 # Run the profiler
-profiler.runcall(financial_calc,[1,0])
+profiler.runcall(esc25,[1,1])
 
 # print the results
 profiler.print_stats()

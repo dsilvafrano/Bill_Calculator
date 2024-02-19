@@ -2,7 +2,7 @@
 # Packages required
 import time
 # starting time
-# start = time.time()
+
 
 import pandas as pd
 import numpy as np
@@ -22,6 +22,7 @@ from EC_calc import EC
 
 # Function to do the bill calculation
 def GM(x1, EC_N, EC_P, EC_OP):
+    start = time.time()
     EC_avg25 = pd.DataFrame()
     bill_amt_25 = pd.DataFrame()
     EC_N = EC_N
@@ -86,12 +87,12 @@ def GM(x1, EC_N, EC_P, EC_OP):
         bill_amt_25['year' + str(n)] = temp
         EC_avg25['year' + str(n)] = temp2
     # print(bill_amt_25)
+    # end time
+    end = time.time()
+
+    runtime = (end - start)
+    print('The runtime Gross metering:', runtime)
     return bill_amt_25,s_units_yr0,e_units_yr0,g_units_yr0,b_units_yr0, g_units_8760, list, EC_avg25
 
 # print(GM())
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime Gross metering:', runtime)

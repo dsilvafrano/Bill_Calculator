@@ -3,7 +3,7 @@ import calendar
 import time
 
 # starting time
-# start = time.time()
+start = time.time()
 import os
 import sys
 # Packages required
@@ -17,6 +17,7 @@ import datetime
 
 # print('Entering monthwise')
 def monthwise():
+    start = time.time()
     try:
         # In case of monthwise
         monthwise = [Inputs.mc1, Inputs.mc2, Inputs.mc3, Inputs.mc4, Inputs.mc5, Inputs.mc6, Inputs.mc7, Inputs.mc8,
@@ -153,6 +154,10 @@ def monthwise():
                 # avg_in_month.append(a)
         # print(sum(user_load_n)/12)
         # print(avg_in_month)
+        # end time
+        end = time.time()
+        runtime = (end - start)
+        print('The runtime Monthwise:', runtime)
         return TS, TOU, user_load_n
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -163,6 +168,7 @@ def monthwise():
 # year = date.year
 # days=366 if calendar.isleap(year) else 365
 def monthwise_data():
+    start = time.time()
     data = monthwise()
     TS = data[0]
     TOU = data[1]
@@ -194,11 +200,11 @@ def monthwise_data():
     # print(avg_in_month_p)
     # print(avg_in_month_op)
     # print(bill_units)
+    # end time
+    end = time.time()
+    runtime = (end - start)
+    print('The runtime Monthwise2:', runtime)
     return avg_in_month, avg_in_month_n, avg_in_month_p, avg_in_month_op, user_load['Load']
-# # end time
-# end = time.time()
-# print(monthwise_data()[4][24:72])
-# runtime = (end - start)
-# print('The runtime Monthwise:', runtime)
+
 
 

@@ -3,7 +3,7 @@
 # Packages required
 import time
 # starting time
-# start = time.time()
+
 
 import pandas as pd
 
@@ -18,6 +18,7 @@ from EC_calc import EC
 
 # Function to do the bill calculation
 def bill_w_o_sys(n,EC_N,EC_P,EC_OP):
+    start = time.time()
     if load_input_type == "average_monthly":
         monthly_units = Monthly.monthly_data()
         month_units = monthly_units[0]
@@ -68,13 +69,13 @@ def bill_w_o_sys(n,EC_N,EC_P,EC_OP):
         t_bill.append(Total)
         EC_avg.append((EC_t))
         # print(t_bill)
+        # end time
+        end = time.time()
+
+        runtime = (end - start)
+        print('The runtime Bill without system inside:', runtime)
 
     return t_bill, EC_avg
 
 # print(bill_w_o_sys(0))
 
-# end time
-# end = time.time()
-#
-# runtime = (end - start)
-# print('The runtime Bill without system inside:', runtime)
